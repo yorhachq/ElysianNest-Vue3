@@ -1,3 +1,4 @@
+/*
 // 根据角色动态生成路由
 import { defineFakeRoute } from "vite-plugin-fake-server/client";
 
@@ -34,3 +35,4 @@ export default defineFakeRoute([
     }
   }
 ]);
+*/

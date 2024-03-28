@@ -22,6 +22,7 @@ import globalization from "@/assets/svg/globalization.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import Check from "@iconify-icons/ep/check";
 import User from "@iconify-icons/ri/user-3-fill";
+import { getUserInfo } from "@/api/user";
 
 defineOptions({
   name: "Login"
@@ -40,17 +41,21 @@ const { title, getDropdownItemStyle, getDropdownItemClass } = useNav();
 const { locale, translationCh, translationEn } = useTranslationLang();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  username: "",
+  password: ""
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
-  loading.value = true;
+  // 登录按钮出现加载图标
+  // loading.value = true;
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
       useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
+        .loginByUsername({
+          username: ruleForm.username,
+          password: ruleForm.password
+        })
         .then(res => {
           if (res.success) {
             // 获取后端路由
@@ -61,7 +66,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           }
         });
     } else {
-      loading.value = false;
+      // loading.value = false;
       return fields;
     }
   });
@@ -85,7 +90,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="select-none">
-    <img :src="bg" class="wave" />
+    <img :src="bg" class="wave" alt="bg" />
     <div class="flex-c absolute right-5 top-3">
       <!-- 主题 -->
       <el-switch

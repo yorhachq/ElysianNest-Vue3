@@ -1,5 +1,7 @@
 import { http } from "@/utils/http";
+import { baseUrlApi } from "./utils";
 
+// 定义接口返回值类型
 export type UserResult = {
   success: boolean;
   data: {
@@ -29,11 +31,24 @@ export type RefreshTokenResult = {
 };
 
 /** 登录 */
-export const getLogin = (data?: object) => {
-  return http.request<UserResult>("post", "/login", { data });
+export const getLogin = (params?: object) => {
+  return http.request<UserResult>("post", baseUrlApi("sysUser/login"), {
+    params
+  });
 };
 
 /** 刷新token */
 export const refreshTokenApi = (data?: object) => {
-  return http.request<RefreshTokenResult>("post", "/refresh-token", { data });
+  return http.request<RefreshTokenResult>(
+    "post",
+    baseUrlApi("sysUser/refresh-token"),
+    {
+      data
+    }
+  );
+};
+
+/** 获取用户信息 */
+export const getUserInfo = () => {
+  return http.request<UserResult>("get", baseUrlApi("sysUser/userInfo"));
 };

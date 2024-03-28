@@ -13,6 +13,7 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+import { message } from "@/utils/message";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -120,23 +121,42 @@ class PureHttp {
     const instance = PureHttp.axiosInstance;
     instance.interceptors.response.use(
       (response: PureHttpResponse) => {
-        const $config = response.config;
         // 关闭进度条动画
         NProgress.done();
-        // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
-        if (typeof $config.beforeResponseCallback === "function") {
-          $config.beforeResponseCallback(response);
+        // START
+        // 判断业务状态码
+        if (response.data.success === true) {
           return response.data;
+        } else {
+          message(response.data.message ? response.data.message : "服务异常", {
+            type: "error", // 可选 `info` 、`success` 、`warning` 、`error` ，默认 `info`
+            icon: "", // 自定义图标，该属性会覆盖 `type` 的图标
+            customClass: "antd" // 可选 `el` 、`antd` ，默认 `antd`
+          });
+          // 异步的状态转化成失败
+          return Promise.reject(response.data);
         }
-        if (PureHttp.initConfig.beforeResponseCallback) {
-          PureHttp.initConfig.beforeResponseCallback(response);
-          return response.data;
-        }
-        return response.data;
+        // END
+        /* const $config = response.config;
+
+         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
+         if (typeof $config.beforeResponseCallback === "function") {
+           $config.beforeResponseCallback(response);
+           return response.data;
+         }
+         if (PureHttp.initConfig.beforeResponseCallback) {
+           PureHttp.initConfig.beforeResponseCallback(response);
+           return response.data;
+         }
+         return response.data;*/
       },
       (error: PureHttpError) => {
         const $error = error;
         $error.isCancelRequest = Axios.isCancel($error);
+        // 处理500错误
+        if (error.response.status === 500) {
+          message("服务器内部错误，请稍后再试。", { type: "error" });
+        }
         // 关闭进度条动画
         NProgress.done();
         // 所有的响应异常 区分来源为取消请求/非取消请求

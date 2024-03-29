@@ -30,6 +30,12 @@ export type RefreshTokenResult = {
   };
 };
 
+export type Result = {
+  success: boolean;
+  message: string;
+  data: {};
+};
+
 /** 登录 */
 export const getLogin = (params?: object) => {
   return http.request<UserResult>("post", baseUrlApi("sysUser/login"), {
@@ -51,4 +57,18 @@ export const refreshTokenApi = (data?: object) => {
 /** 获取用户信息 */
 export const getUserInfo = () => {
   return http.request<UserResult>("get", baseUrlApi("sysUser/userInfo"));
+};
+
+/** 发送邮箱验证码 */
+export const sendEmailCodeService = (data?: object) => {
+  return http.request<Result>("post", baseUrlApi("sysUser/sendVerifyEmail"), {
+    data
+  });
+};
+
+/** 重置密码 */
+export const resetPwdService = (data?: object) => {
+  return http.request<Result>("post", baseUrlApi("sysUser/resetPwd"), {
+    data
+  });
 };

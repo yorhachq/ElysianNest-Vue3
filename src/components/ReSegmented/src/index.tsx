@@ -38,7 +38,7 @@ const props = {
 export default defineComponent({
   name: "ReSegmented",
   props,
-  emits: ["change", "update:modelValue"],
+  emits: ["change", "forgetPwd:modelValue"],
   setup(props, { emit }) {
     const width = ref(0);
     const translateX = ref(0);

@@ -1,5 +1,7 @@
-import { getPluginsList } from "@build/plugins";
-import { include, exclude } from "@build/optimize";
+// noinspection ES6PreferShortImport
+
+import { getPluginsList } from "./build//plugins";
+import { include, exclude } from "./build//optimize";
 import { type UserConfigExport, type ConfigEnv, loadEnv } from "vite";
 import {
   root,
@@ -7,7 +9,7 @@ import {
   warpperEnv,
   pathResolve,
   __APP_INFO__
-} from "@build/utils";
+} from "./build/utils";
 
 export default ({ mode }: ConfigEnv): UserConfigExport => {
   const { VITE_CDN, VITE_PORT, VITE_COMPRESSION, VITE_PUBLIC_PATH } =

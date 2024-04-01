@@ -14,6 +14,7 @@ import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
 import { message } from "@/utils/message";
+import router from "@/router";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -81,13 +82,19 @@ class PureHttp {
               const data = getToken();
               if (data) {
                 const now = new Date().getTime();
-                const expired = parseInt(data.expires) - now <= 0;
+                // 预留10秒的刷新时间,提前进行请求
+                // 如网络延迟，导致请求过期，也是预期内允许的情况
+                const period = 10000;
+                const expired = parseInt(data.expires) - now - period <= 0;
                 if (expired) {
                   if (!PureHttp.isRefreshing) {
                     PureHttp.isRefreshing = true;
                     // token过期刷新
                     useUserStoreHook()
-                      .handRefreshToken({ refreshToken: data.refreshToken })
+                      .handRefreshToken({
+                        refreshToken: data.refreshToken,
+                        accessToken: data.accessToken
+                      })
                       .then(res => {
                         const token = res.data.accessToken;
                         config.headers["Authorization"] = formatToken(token);
@@ -153,9 +160,19 @@ class PureHttp {
       (error: PureHttpError) => {
         const $error = error;
         $error.isCancelRequest = Axios.isCancel($error);
+        // 处理401错误
+        if (error.response.status === 401) {
+          message("未登录，请先登录！", { type: "warning" });
+          // 跳转登录页面
+          router.push(`/login`);
+        }
         // 处理500错误
-        if (error.response.status === 500) {
+        else if (error.response.status === 500) {
           message("服务器内部错误，请稍后再试。", { type: "error" });
+        } else {
+          message("[" + error.response.status + "]服务异常！", {
+            type: "error"
+          });
         }
         // 关闭进度条动画
         NProgress.done();

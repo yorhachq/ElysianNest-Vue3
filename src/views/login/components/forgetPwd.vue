@@ -67,7 +67,9 @@ const resetPwd = async (formEl: FormInstance | undefined) => {
       if (valid) {
         const result = await resetPwdService(ruleForm);
         if (result.success === true) {
-          transformI18n($t("login.passwordUpdateReg")), { type: "success" };
+          message(transformI18n($t("login.passwordUpdateReg")), {
+            type: "success"
+          });
           loading.value = false;
         }
       } else {

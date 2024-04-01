@@ -98,3 +98,8 @@ export function removeToken() {
 export const formatToken = (token: string): string => {
   return "Bearer " + token;
 };
+
+/** 获取refreshToken */
+export const getRefreshToken = () => {
+  return storageLocal().getItem<DataInfo<number>>(userKey)?.refreshToken;
+};

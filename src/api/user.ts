@@ -68,7 +68,10 @@ export const sendEmailCodeService = (data?: object) => {
 
 /** 重置密码 */
 export const resetPwdService = (data?: object) => {
-  return http.request<Result>("post", baseUrlApi("sysUser/resetPwd"), {
-    data
-  });
+  return http.request<Result>("post", baseUrlApi("sysUser/resetPwd"), { data });
+};
+
+/** 退出登录(通过后端销毁Redis中的两个token) */
+export const logout = (data?: object) => {
+  return http.request<Result>("post", baseUrlApi("sysUser/logout"), { data });
 };

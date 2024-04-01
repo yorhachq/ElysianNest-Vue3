@@ -4,10 +4,18 @@ import type { userType } from "./types";
 import { routerArrays } from "@/layout/types";
 import { router, resetRouter } from "@/router";
 import { storageLocal } from "@pureadmin/utils";
-import { getLogin, refreshTokenApi } from "@/api/user";
+import { getLogin, logout, refreshTokenApi } from "@/api/user";
 import type { UserResult, RefreshTokenResult } from "@/api/user";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { type DataInfo, setToken, removeToken, userKey } from "@/utils/auth";
+import {
+  type DataInfo,
+  setToken,
+  removeToken,
+  userKey,
+  getRefreshToken,
+  getToken
+} from "@/utils/auth";
+import { message } from "@/utils/message";
 
 export const useUserStore = defineStore({
   id: "pure-user",
@@ -47,6 +55,7 @@ export const useUserStore = defineStore({
     /** 登入 */
     async loginByUsername(data) {
       return new Promise<UserResult>((resolve, reject) => {
+        data.username = data.username.trim();
         getLogin(data)
           .then(data => {
             if (data) {
@@ -59,13 +68,23 @@ export const useUserStore = defineStore({
           });
       });
     },
-    /** 前端登出（不调用接口） */
+    /** 退出登录（调用接口） */
     logOut() {
       this.username = "";
       this.roles = [];
+      // 后端登出(必须先执行，否则cookies清除后就获取不到token了)
+      const accessToken = getToken().accessToken;
+      const refreshToken = getRefreshToken();
+      const data = {
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      };
+      logout(data);
+      // 前端删除
       removeToken();
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
+      message("已退出登录", { type: "success" });
       router.push("/login");
     },
     /** 刷新`token` */

@@ -68,4 +68,4 @@ login:
   emailSendSuccess: 验证码发送成功，请前往邮箱查看
   passwordSureReg: 请输入确认密码
   passwordDifferentReg: 两次密码不一致!
-  passwordUpdateReg: 修改密码成功
+  passwordUpdateReg: 密码修改成功

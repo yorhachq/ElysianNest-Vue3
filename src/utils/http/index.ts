@@ -164,7 +164,7 @@ class PureHttp {
         if (error.response.status === 401) {
           message("未登录，请先登录！", { type: "warning" });
           // 跳转登录页面
-          router.push(`/login`);
+          router.push("/login");
         }
         // 处理500错误
         else if (error.response.status === 500) {

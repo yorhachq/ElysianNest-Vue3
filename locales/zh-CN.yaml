@@ -33,6 +33,18 @@ menus:
   permissionPage: 页面权限
   permissionButton: 按钮权限
   hstest: 测试页面
+  space: 个人空间
+  hotelManagement: 酒店管理
+  roomStatus: 日历房态
+  checkIn: 入住管理
+  order: 订单管理
+  room: 房间管理
+  roomType: 房间类型管理
+  personnelManagement: 人员管理
+  member: 会员管理
+  staff: 员工管理
+  role: 角色管理
+  systemManagement: 系统管理
 status:
   hsLoad: 加载中...
 login:

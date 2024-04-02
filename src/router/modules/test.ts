@@ -1,11 +1,10 @@
-import { $t } from "@/plugins/i18n";
+import { $t, transformI18n } from "@/plugins/i18n";
 
 export default {
-  path: "/",
-  redirect: "/test",
+  path: "/test",
   meta: {
     icon: "twemoji:face-with-monocle",
-    title: $t("menus.hstest"),
+    title: transformI18n($t("menus.hstest")),
     rank: 10
   },
   children: [
@@ -14,7 +13,7 @@ export default {
       name: "Test",
       component: () => import("@/views/test.vue"),
       meta: {
-        title: $t("menus.hstest")
+        title: transformI18n($t("menus.hstest"))
       }
     }
   ]

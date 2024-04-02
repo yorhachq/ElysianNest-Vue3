@@ -1,3 +1,4 @@
+/*
 import { defineFakeRoute } from "vite-plugin-fake-server/client";
 
 // 模拟刷新token接口
@@ -25,3 +26,4 @@ export default defineFakeRoute([
     }
   }
 ]);
+*/

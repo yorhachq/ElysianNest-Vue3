@@ -17,6 +17,7 @@ const elStyle = computed((): CSSProperties => {
 });
 
 const username = ref(useUserStoreHook()?.username);
+const roles = ref(useUserStoreHook()?.roles);
 
 const options = [
   {
@@ -50,7 +51,7 @@ function onChange() {
     <el-card shadow="never" :style="elStyle">
       <template #header>
         <div class="card-header">
-          <span>当前角色：{{ username }}</span>
+          <span>当前角色：{{ roles }}</span>
         </div>
       </template>
       <el-select v-model="username" class="!w-[160px]" @change="onChange">

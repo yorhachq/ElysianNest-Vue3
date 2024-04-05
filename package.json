@@ -75,7 +75,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
-    "@faker-js/faker": "^8.4.1",
     "@iconify-icons/ep": "^1.2.12",
     "@iconify-icons/ic": "^1.2.13",
     "@iconify-icons/ri": "^1.2.10",
@@ -121,7 +120,6 @@
     "vite": "^5.2.3",
     "vite-plugin-cdn-import": "^0.3.5",
     "vite-plugin-compression": "^0.5.1",
-    "vite-plugin-fake-server": "^2.1.1",
     "vite-plugin-remove-console": "^2.2.0",
     "vite-plugin-router-warn": "^1.0.0",
     "vite-svg-loader": "^5.1.0",

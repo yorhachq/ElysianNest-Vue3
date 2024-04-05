@@ -5,7 +5,7 @@ export default {
   redirect: "/hotel/roomStatus",
   meta: {
     icon: "ri:hotel-line",
-    title: transformI18n($t("menus.hotelManagement")),
+    title: $t("menus.hotelManagement"),
     rank: 3
   },
   children: [
@@ -51,7 +51,8 @@ export default {
       component: () => import("@/views/hotel/roomType.vue"),
       meta: {
         icon: "ic:baseline-meeting-room",
-        title: transformI18n($t("menus.roomType"))
+        title: transformI18n($t("menus.roomType")),
+        roles: ["admin"]
       }
     }
   ]

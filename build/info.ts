@@ -4,10 +4,12 @@ import dayjs, { type Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
 import gradientString from "gradient-string";
 import boxen, { type Options as BoxenOptions } from "boxen";
-dayjs.extend(duration);
 
+dayjs.extend(duration);
+const time = dayjs().format("YYYY-MM-DD HH:mm:ss");
 const welcomeMessage = gradientString("cyan", "magenta").multiline(
-  `您好! 欢迎使用 pure-admin 开源项目\n我们为您精心准备了下面两个贴心的保姆级文档\nhttps://yiming_chang.gitee.io/pure-admin-doc\nhttps://pure-admin-utils.netlify.app`
+  `欢迎使用 Elysian Nest 悦巢™ 酒店管理系统\nhttps://github.com/yorhachq/ElysianNest-Vue3\nBuild By YoRHa_CHQ <YoRHa_CHQ@163.com>
+Server Start Time: ${time}`
 );
 
 const boxenOptions: BoxenOptions = {

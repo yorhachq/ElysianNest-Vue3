@@ -206,7 +206,7 @@ const { VITE_UI_URL } = import.meta.env;
                     <el-link
                       type="primary"
                       :underline="false"
-                      href={{VITE_UI_URL}}
+                      :href="VITE_UI_URL"
                       target="_blank"
                       style="padding-bottom: 1px"
                     >

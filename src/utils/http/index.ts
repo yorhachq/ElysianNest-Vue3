@@ -134,6 +134,15 @@ class PureHttp {
         // 判断业务状态码
         if (response.data.success === true) {
           return response.data;
+        } else if (response.data.message.includes("Redirect")) {
+          // 将住客重定向到前台界面
+          message("[304]欢迎光临，正在跳转前台界面", {
+            type: "warning"
+          });
+          // 以"Redirect"为界分割URL
+          const redirectUrl = response.data.message.split("Redirect:")[1];
+          // 在当前页面跳转到redirectUrl
+          window.location.href = redirectUrl;
         } else {
           message(response.data.message ? response.data.message : "服务异常", {
             type: "error", // 可选 `info` 、`success` 、`warning` 、`error` ，默认 `info`

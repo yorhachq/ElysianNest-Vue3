@@ -1,4 +1,5 @@
 import { $t, transformI18n } from "@/plugins/i18n";
+import Home from "@iconify-icons/ic/baseline-home";
 
 const { VITE_HIDE_HOME } = import.meta.env;
 const Layout = () => import("@/layout/index.vue");
@@ -9,7 +10,7 @@ export default {
   component: Layout,
   redirect: "/home",
   meta: {
-    icon: "ic:baseline-home",
+    icon: Home,
     title: transformI18n($t("menus.hshome")),
     rank: 0
   },

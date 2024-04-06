@@ -81,3 +81,4 @@ login:
   passwordSureReg: 请输入确认密码
   passwordDifferentReg: 两次密码不一致!
   passwordUpdateReg: 密码修改成功
+  guest: 我要订房，立即前往

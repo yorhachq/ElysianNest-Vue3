@@ -93,6 +93,8 @@ useEventListener(document, "keypress", ({ code }) => {
   if (code === "Enter" && !disabled.value && !loading.value)
     immediateDebounce(ruleFormRef.value);
 });
+
+const { VITE_UI_URL } = import.meta.env;
 </script>
 
 <template>
@@ -200,6 +202,17 @@ useEventListener(document, "keypress", ({ code }) => {
             <Motion :delay="250">
               <el-form-item>
                 <div class="w-full h-[20px] flex justify-between items-center">
+                  <el-button link type="primary">
+                    <el-link
+                      type="primary"
+                      :underline="false"
+                      href={{VITE_UI_URL}}
+                      target="_blank"
+                      style="padding-bottom: 1px"
+                    >
+                      {{ t("login.guest") }}
+                    </el-link>
+                  </el-button>
                   <el-button
                     link
                     type="primary"

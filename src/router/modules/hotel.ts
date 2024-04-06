@@ -1,10 +1,14 @@
 import { $t, transformI18n } from "@/plugins/i18n";
+import Hotel from "@iconify-icons/ri/hotel-line";
+import RoomStatus from "@iconify-icons/ri/calendar-2-line";
+import Room from "@iconify-icons/ic/baseline-hotel"
+import RoomType from "@iconify-icons/ic/baseline-meeting-room"
 
 export default {
   path: "/hotel",
   redirect: "/hotel/roomStatus",
   meta: {
-    icon: "ri:hotel-line",
+    icon: Hotel,
     title: $t("menus.hotelManagement"),
     rank: 3
   },
@@ -14,7 +18,7 @@ export default {
       name: "RoomStatus",
       component: () => import("@/views/hotel/roomStatus.vue"),
       meta: {
-        icon: "ri:calendar-2-line",
+        icon: RoomStatus,
         title: transformI18n($t("menus.roomStatus"))
       }
     },
@@ -41,7 +45,7 @@ export default {
       name: "Room",
       component: () => import("@/views/hotel/room.vue"),
       meta: {
-        icon: "ic:baseline-hotel",
+        icon: Room,
         title: transformI18n($t("menus.room"))
       }
     },
@@ -50,7 +54,7 @@ export default {
       name: "RoomType",
       component: () => import("@/views/hotel/roomType.vue"),
       meta: {
-        icon: "ic:baseline-meeting-room",
+        icon: RoomType,
         title: transformI18n($t("menus.roomType")),
         roles: ["admin"]
       }

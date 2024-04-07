@@ -28,7 +28,7 @@ const props = {
     require: false,
     default: "0"
   },
-  /** 将宽度调整为父元素宽度	 */
+  /** 将宽度调整为父元素宽度   */
   block: {
     type: Boolean,
     default: false
@@ -38,7 +38,7 @@ const props = {
 export default defineComponent({
   name: "ReSegmented",
   props,
-  emits: ["change", "forgetPwd:modelValue"],
+  emits: ["update:modelValue", "change", "forgetPwd:modelValue"],
   setup(props, { emit }) {
     const width = ref(0);
     const translateX = ref(0);

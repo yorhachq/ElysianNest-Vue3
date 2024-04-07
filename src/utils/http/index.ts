@@ -134,7 +134,10 @@ class PureHttp {
         // 判断业务状态码
         if (response.data.success === true) {
           return response.data;
-        } else if (response.data.message.includes("Redirect")) {
+        } else if (
+          response.data.success === false &&
+          response.data.message.includes("Redirect")
+        ) {
           // 将住客重定向到前台界面
           message("[304]欢迎光临，正在跳转前台界面", {
             type: "warning"

@@ -87,6 +87,26 @@ export const useUserStore = defineStore({
       message("已退出登录", { type: "success" });
       router.push("/login");
     },
+    /**
+     * 仅用于配合拦截Guest，比常规登出少了信息提示和路由跳转
+     * 注意：若本次拦截的用户已登录用户前台，也会在本方法执行后退出登录
+     */
+    throwBack() {
+      this.username = "";
+      this.roles = [];
+      // 后端登出(被重定向前已经在后端登录了，后端拦截器是在获取动态路由时触发的，所以被重定向后也要清空后端登录状态)
+      const accessToken = getToken().accessToken;
+      const refreshToken = getRefreshToken();
+      const data = {
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      };
+      logout(data);
+      // 前端删除
+      removeToken();
+      useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
+      resetRouter();
+    },
     /** 刷新`token` */
     async handRefreshToken(data) {
       return new Promise<RefreshTokenResult>((resolve, reject) => {

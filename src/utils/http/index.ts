@@ -130,6 +130,17 @@ class PureHttp {
       (response: PureHttpResponse) => {
         // 关闭进度条动画
         NProgress.done();
+
+        const $config = response.config;
+        // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
+        if (typeof $config.beforeResponseCallback === "function") {
+          $config.beforeResponseCallback(response);
+          // return response.data;
+        }
+        if (PureHttp.initConfig.beforeResponseCallback) {
+          PureHttp.initConfig.beforeResponseCallback(response);
+          // return response.data;
+        }
         // START
         // 判断业务状态码
         if (response.data.success === true) {
@@ -139,11 +150,13 @@ class PureHttp {
           response.data.message.includes("Redirect")
         ) {
           // 将住客重定向到前台界面
-          message("[304]欢迎光临，正在跳转前台界面", {
+          message("[304]正在为您跳转前台界面", {
             type: "warning"
           });
           // 以"Redirect"为界分割URL
           const redirectUrl = response.data.message.split("Redirect:")[1];
+          // 清除登录信息，避免访问后台时一直被拦截
+          useUserStoreHook().throwBack();
           // 在当前页面跳转到redirectUrl
           window.location.href = redirectUrl;
         } else {
@@ -156,18 +169,7 @@ class PureHttp {
           return Promise.reject(response.data);
         }
         // END
-        /* const $config = response.config;
-
-         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
-         if (typeof $config.beforeResponseCallback === "function") {
-           $config.beforeResponseCallback(response);
-           return response.data;
-         }
-         if (PureHttp.initConfig.beforeResponseCallback) {
-           PureHttp.initConfig.beforeResponseCallback(response);
-           return response.data;
-         }
-         return response.data;*/
+        return response.data;
       },
       (error: PureHttpError) => {
         const $error = error;

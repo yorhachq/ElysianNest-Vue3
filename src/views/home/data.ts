@@ -72,7 +72,6 @@ const barChartData = [
 ];
 // 异步填充柱形图数据
 await getWeekDataService().then(({ data }) => {
-  console.log(data);
   barChartData.forEach((item, index) => {
     item.checkin = data[index].checkin;
     item.checkout = data[index].checkout;

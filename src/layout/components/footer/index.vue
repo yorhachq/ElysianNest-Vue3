@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { getConfig } from "@/config";
 
-const TITLE = getConfig("Title");
+const AUTHOR = getConfig("Author");
 </script>
 
 <template>
@@ -11,10 +11,10 @@ const TITLE = getConfig("Title");
     Copyright © 2024-present
     <a
       class="hover:text-primary"
-      href="https://github.com/yorhachq/ElysianNest-Vue3"
+      href="https://github.com/yorhachq/"
       target="_blank"
     >
-      &nbsp;{{ TITLE }}
+      &nbsp;{{ AUTHOR }}
     </a>
   </footer>
 </template>

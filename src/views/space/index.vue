@@ -182,7 +182,7 @@
     <el-card class="quick-actions">
       <template #header>
         <div class="card-header">
-          <span>快速操作</span>
+          <h4>快速操作</h4>
         </div>
       </template>
       <!-- 四个按钮 -->
@@ -276,6 +276,7 @@ import { useUserStoreHook } from "@/store/modules/user";
 import { message } from "@/utils/message";
 import { getToken } from "@/utils/auth";
 import UpdatePwd from "@/views/space/components/updatePwd.vue";
+import { storageLocal } from "@pureadmin/utils";
 
 const editUserForm = ref(null);
 
@@ -467,7 +468,8 @@ const submitEdit = async () => {
         await updateUserInfo(editUserInfo);
         await updateAvatar(editUserInfo);
         // 修改pinia中的数据
-        useUserStoreHook().avatar = editUserInfo.avatar;
+        useUserStoreHook().SET_AVATAR(editUserInfo.avatar);
+        storageLocal().setItem("avatar", editUserInfo.avatar);
         // 更新页面上显示的用户信息
         Object.assign(userInfo, editUserInfo);
         message("资料修改成功", { type: "success" });

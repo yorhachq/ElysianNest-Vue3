@@ -1,6 +1,7 @@
 {
   "Version": "5.2.0",
   "Title": "Elysian Admin",
+  "Author": "YoRHa_CHQ",
   "FixedHeader": true,
   "HiddenSideBar": false,
   "MultiTagsCache": false,

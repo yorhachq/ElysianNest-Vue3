@@ -4,7 +4,7 @@ import Notice from "../notice/index.vue";
 import FullScreen from "./fullScreen.vue";
 import SidebarItem from "./sidebarItem.vue";
 import { isAllEmpty } from "@pureadmin/utils";
-import { ref, nextTick, computed, onMounted } from "vue";
+import { ref, nextTick, computed } from "vue";
 import { useNav } from "@/layout/hooks/useNav";
 import { useTranslationLang } from "../../hooks/useTranslationLang";
 import { usePermissionStoreHook } from "@/store/modules/permission";
@@ -30,12 +30,8 @@ const {
   getDropdownItemClass
 } = useNav();
 
-let userAvatar = ref();
-
-onMounted(() => {
-  userAvatar = computed(() => {
-    return useUserStoreHook().avatar;
-  });
+const userAvatar = computed(() => {
+  return useUserStoreHook().avatar;
 });
 
 const defaultActive = computed(() =>

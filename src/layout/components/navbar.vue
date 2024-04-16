@@ -11,9 +11,8 @@ import globalization from "@/assets/svg/globalization.svg?component";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 import Check from "@iconify-icons/ep/check";
-import { computed, onMounted } from "vue";
-import { useUserStoreHook } from "@/store/modules/user";
-
+import {computed} from "vue";
+import {useUserStoreHook} from "@/store/modules/user";
 const {
   layout,
   device,
@@ -27,12 +26,8 @@ const {
   getDropdownItemClass
 } = useNav();
 
-let userAvatar = ref();
-
-onMounted(() => {
-  userAvatar = computed(() => {
-    return useUserStoreHook().avatar;
-  });
+const userAvatar = computed(() => {
+  return useUserStoreHook().avatar;
 });
 
 const { t, locale, translationCh, translationEn } = useTranslationLang();

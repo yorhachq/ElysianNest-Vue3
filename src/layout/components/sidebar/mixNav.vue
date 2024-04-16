@@ -34,12 +34,8 @@ const {
   getDropdownItemClass
 } = useNav();
 
-let userAvatar = ref();
-
-onMounted(() => {
-  userAvatar = computed(() => {
-    return useUserStoreHook().avatar;
-  });
+const userAvatar = computed(() => {
+  return useUserStoreHook().avatar;
 });
 
 function getDefaultActive(routePath) {

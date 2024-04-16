@@ -42,6 +42,10 @@ export const useUserStore = defineStore({
     SET_ROLES(roles: Array<string>) {
       this.roles = roles;
     },
+    /** 存储头像 */
+    SET_AVATAR(avatar: string) {
+      this.avatar = avatar;
+    },
     /** 存储登录页面显示哪个组件 */
     SET_CURRENTPAGE(value: number) {
       this.currentPage = value;

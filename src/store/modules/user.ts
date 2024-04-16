@@ -24,6 +24,8 @@ export const useUserStore = defineStore({
     username: storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "",
     // 页面级别权限
     roles: storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [],
+    // 用户头像
+    avatar: storageLocal().getItem<DataInfo<number>>(userKey)?.avatar ?? "",
     // 判断登录页面显示哪个组件（0：登录（默认）、1：手机登录、2：二维码登录、3：注册、4：忘记密码）
     currentPage: 0,
     // 是否勾选了登录页的免登录
@@ -122,7 +124,8 @@ export const useUserStore = defineStore({
           });
       });
     }
-  }
+  },
+  persist: true
 });
 
 export function useUserStoreHook() {

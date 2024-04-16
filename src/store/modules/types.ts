@@ -39,6 +39,7 @@ export type setType = {
 export type userType = {
   username?: string;
   roles?: Array<string>;
+  avatar?: string;
   verifyCode?: string;
   currentPage?: number;
   isRemembered?: boolean;

@@ -12,6 +12,7 @@ import globalization from "@/assets/svg/globalization.svg?component";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 import Check from "@iconify-icons/ep/check";
+import { useUserStoreHook } from "@/store/modules/user";
 
 const menuRef = ref();
 
@@ -24,11 +25,14 @@ const {
   onPanel,
   getLogo,
   username,
-  userAvatar,
   avatarsStyle,
   getDropdownItemStyle,
   getDropdownItemClass
 } = useNav();
+
+const userAvatar = computed(() => {
+  return useUserStoreHook().avatar;
+});
 
 const defaultActive = computed(() =>
   !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path

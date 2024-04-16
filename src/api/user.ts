@@ -58,6 +58,12 @@ export const refreshTokenApi = (data?: object) => {
 export const getUserInfo = () => {
   return http.request<UserResult>("get", baseUrlApi("sysUser/userInfo"));
 };
+/** 更新用户信息 */
+export const updateUserInfo = (data?: object) => {
+  return http.request<Result>("put", baseUrlApi("sysUser/update"), {
+    data
+  });
+};
 
 /** 发送邮箱验证码 */
 export const sendEmailCodeService = (data?: object) => {
@@ -70,8 +76,35 @@ export const sendEmailCodeService = (data?: object) => {
 export const resetPwdService = (data?: object) => {
   return http.request<Result>("post", baseUrlApi("sysUser/resetPwd"), { data });
 };
+/** 修改密码 */
+export const updatePwdService = (data?: object) => {
+  return http.request<Result>("patch", baseUrlApi("sysUser/updatePwd"), {
+    data
+  });
+};
+
+/** 修改头像 */
+export const updateAvatar = (data?: object) => {
+  return http.request<Result>("post", baseUrlApi("sysUser/updateAvatar"), {
+    data
+  });
+};
 
 /** 退出登录(通过后端销毁Redis中的两个token) */
 export const logout = (data?: object) => {
   return http.request<Result>("post", baseUrlApi("sysUser/logout"), { data });
+};
+
+/** 获取客户端IP归属地 */
+export const getIpRegion = (data?: object) => {
+  return http.request<Result>("get", baseUrlApi("ip/region"), {
+    data
+  });
+};
+
+/** 获取实时天气 */
+export const getWeather = (data?: object) => {
+  return http.request<Result>("get", baseUrlApi("/sysUser/weather"), {
+    data
+  });
 };

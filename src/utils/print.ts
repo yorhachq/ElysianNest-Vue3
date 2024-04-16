@@ -66,7 +66,7 @@ Print.prototype = {
     str += `<style>.no-print{display:none;}${this.conf.styleStr}</style>`;
     return str;
   },
-  // form assignment
+  // userPwd assignment
   getHtml: function (): Element {
     const inputs = document.querySelectorAll("input");
     const selects = document.querySelectorAll("select");

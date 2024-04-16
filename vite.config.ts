@@ -28,8 +28,9 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {
         "/api": {
-          // 这里填写后端地址
-          target: "http://127.0.0.1:8080",
+          // 这里填写后端地址(注意:要使用IP获取相关接口，必须为公网IP)
+          target: "http://elysianserver.chqcloud.top",
+          // target: "http://127.0.0.1:8080",
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, "")
         }

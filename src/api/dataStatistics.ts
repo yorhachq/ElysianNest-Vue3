@@ -4,6 +4,7 @@ import { baseUrlApi } from "@/api/utils";
 // 页面最上方小方格数据
 type ChartResult = {
   success: boolean;
+  msg: string;
   data: ChartData;
 };
 type ChartData = [
@@ -17,6 +18,7 @@ type ChartData = [
 // 全周概览柱状图数据
 type BarChartResult = {
   success: boolean;
+  msg: string;
   data: BarChartData;
 };
 type BarChartData = {

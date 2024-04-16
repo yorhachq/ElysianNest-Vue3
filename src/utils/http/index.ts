@@ -11,10 +11,12 @@ import type {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { getToken, formatToken } from "@/utils/auth";
+import { getToken, formatToken, removeToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
 import { message } from "@/utils/message";
-import router from "@/router";
+import router, { resetRouter } from "@/router";
+import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+import { routerArrays } from "@/layout/types";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -177,6 +179,10 @@ class PureHttp {
         // 处理401错误
         if (error.response.status === 401) {
           message("未登录，请先登录！", { type: "warning" });
+          // 清除前端登录信息
+          removeToken();
+          useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
+          resetRouter();
           // 跳转登录页面
           router.push("/login");
         }

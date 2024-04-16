@@ -6,7 +6,7 @@ import FullScreen from "./fullScreen.vue";
 import { isAllEmpty } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
 import { transformI18n } from "@/plugins/i18n";
-import { ref, toRaw, watch, onMounted, nextTick } from "vue";
+import { ref, toRaw, watch, onMounted, nextTick, computed } from "vue";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { getParentPaths, findRouteByPath } from "@/router/utils";
 import { useTranslationLang } from "../../hooks/useTranslationLang";
@@ -15,6 +15,7 @@ import globalization from "@/assets/svg/globalization.svg?component";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 import Check from "@iconify-icons/ep/check";
+import { useUserStoreHook } from "@/store/modules/user";
 
 const menuRef = ref();
 const defaultActive = ref(null);
@@ -27,12 +28,15 @@ const {
   onPanel,
   resolvePath,
   username,
-  userAvatar,
   getDivStyle,
   avatarsStyle,
   getDropdownItemStyle,
   getDropdownItemClass
 } = useNav();
+
+const userAvatar = computed(() => {
+  return useUserStoreHook().avatar;
+});
 
 function getDefaultActive(routePath) {
   const wholeMenus = usePermissionStoreHook().wholeMenus;

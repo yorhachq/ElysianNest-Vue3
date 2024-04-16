@@ -13,6 +13,8 @@ export interface DataInfo<T> {
   username?: string;
   /** 当前登陆用户的角色 */
   roles?: Array<string>;
+  /** 当前登陆用户的头像 */
+  avatar?: string;
 }
 
 export const userKey = "user-info";

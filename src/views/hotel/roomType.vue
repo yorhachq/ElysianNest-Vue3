@@ -10,9 +10,9 @@
               v-model="searchKeyword"
               placeholder="请输入关键词回车搜索"
               clearable
+              style="width: 200px; margin-right: 10px"
               @clear="fetchData"
               @keyup.enter="fetchData"
-              style="width: 200px; margin-right: 10px"
             />
             <el-button type="primary" @click="handleAdd"
               >添加房间类型
@@ -21,9 +21,9 @@
               type="info"
               :icon="Refresh"
               circle
-              @click="handleRefresh"
               style="margin-left: 10px"
-            ></el-button>
+              @click="handleRefresh"
+            />
           </div>
         </div>
       </template>
@@ -40,27 +40,19 @@
           align="center"
           sortable
         />
-        <el-table-column
-          prop="typeName"
-          label="房型名称"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="typeName" label="房型名称" align="center" />
         <el-table-column
           prop="price"
           label="房型价格"
           align="center"
           sortable
-        ></el-table-column>
+        />
         <el-table-column prop="image" label="房型图片" align="center">
           <template #default="scope">
             <img :src="scope.row.image" class="w-20 h-20 object-cover" />
           </template>
         </el-table-column>
-        <el-table-column
-          prop="description"
-          label="房型描述"
-          align="center"
-        ></el-table-column>
+        <el-table-column prop="description" label="房型描述" align="center" />
         <el-table-column
           prop="updateTime"
           label="更新时间"
@@ -115,10 +107,10 @@
             { required: true, message: '房型名称不能为空', trigger: 'blur' }
           ]"
         >
-          <el-input v-model="form.typeName" placeholder="请输入房型名称"></el-input>
+          <el-input v-model="form.typeName" placeholder="请输入房型名称" />
         </el-form-item>
         <el-form-item label="房型价格" prop="price">
-          <el-input-number v-model="form.price" :min="0"></el-input-number>
+          <el-input-number v-model="form.price" :min="0" />
         </el-form-item>
         <el-form-item label="房型图片" prop="image">
           <el-upload
@@ -136,8 +128,12 @@
             </el-icon>
           </el-upload>
         </el-form-item>
-        <el-form-item label="房型描述" prop="description" placeholder="介绍下这个房型吧">
-          <el-input v-model="form.description" type="textarea"></el-input>
+        <el-form-item label="房型描述" prop="description">
+          <el-input
+            v-model="form.description"
+            type="textarea"
+            placeholder="介绍下这个房型吧"
+          />
         </el-form-item>
       </el-form>
       <template #footer>

@@ -26,6 +26,7 @@
         />
         <el-input
           v-model="phone"
+          type="number"
           placeholder="请输入手机号"
           style="margin-right: 16px"
         />
@@ -90,8 +91,8 @@
     <div v-if="activeStep === 2">
       <div class="date-range w-full text-center">
         <el-date-picker
-          style="width: 100vh"
           v-model="dateRange"
+          style="width: 100vh"
           type="daterange"
           range-separator="至"
           start-placeholder="入住日期"
@@ -153,16 +154,15 @@
 </template>
 
 <script setup>
-import {ref, computed, watch} from "vue";
+import { ref, computed, watch } from "vue";
+import { getAvailableRooms, reserveRoom } from "@/api/roomCalendar";
 import {
   searchMember,
   searchMemberByName,
-  searchMemberByPhone,
-  getAvailableRooms,
-  checkinRoom
-} from "@/api/roomCalendar";
+  searchMemberByPhone
+} from "@/api/hotelMember";
 import dayjs from "dayjs";
-import {ElMessage, ElMessageBox} from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 const props = defineProps({
   modelValue: Boolean,
@@ -285,7 +285,16 @@ const prevStep = () => {
 };
 
 const nextStep = () => {
-  activeStep.value++;
+  if (
+    dateRange.value.length > 0
+      ? dateRange.value[0].toLocaleDateString() ===
+        dateRange.value[1].toLocaleDateString()
+      : false
+  ) {
+    ElMessage.warning("退房日期不能与入住日期相同");
+  } else {
+    activeStep.value++;
+  }
 };
 
 const submit = async () => {
@@ -301,17 +310,23 @@ const submit = async () => {
     ElMessage.warning("请选择入住日期和退房日期");
     return;
   }
-  const res = await checkinRoom({
-    userId: selectedMember.value.userId,
-    roomId: selectedRoom.value.roomId,
-    checkinDate: dateRange.value[0],
-    checkoutDate: dateRange.value[1]
+  ElMessageBox.confirm("确认进行预定吗？", "请仔细核对订单信息", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning"
+  }).then(async () => {
+    const res = await reserveRoom({
+      userId: selectedMember.value.userId,
+      roomId: selectedRoom.value.roomId,
+      checkinDate: dateRange.value[0],
+      checkoutDate: dateRange.value[1]
+    });
+    if (res.success) {
+      ElMessage.success("预定成功,请关注订单信息");
+      emit("success");
+      visible.value = false;
+    }
   });
-  if (res.success) {
-    ElMessage.success("预定成功,请关注订单信息");
-    emit("success");
-    visible.value = false;
-  }
 };
 
 const fetchRooms = async () => {

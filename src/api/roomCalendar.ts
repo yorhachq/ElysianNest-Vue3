@@ -24,33 +24,6 @@ export function getAvailableRooms(date?: string) {
   );
 }
 
-// 搜索会员
-export function searchMember(data?: object) {
-  return http.request<Result>(
-    "get",
-    baseUrlApi(
-      "hotelMember/getmembers?username=" +
-        data.username +
-        "&phone=" +
-        data.phone
-    )
-  );
-}
-
-export function searchMemberByName(keyword?: string) {
-  return http.request<Result>(
-    "get",
-    baseUrlApi("hotelMember/getmembers?username=" + keyword)
-  );
-}
-
-export function searchMemberByPhone(keyword?: string) {
-  return http.request<Result>(
-    "get",
-    baseUrlApi("hotelMember/getmembers?phone=" + keyword)
-  );
-}
-
 // 预定房间
 export function reserveRoom(data?: object) {
   return http.request<Result>("post", baseUrlApi("hotelOrder/reserve"), {

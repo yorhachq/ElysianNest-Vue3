@@ -26,6 +26,7 @@
         />
         <el-input
           v-model="phone"
+          type="number"
           placeholder="请输入手机号"
           style="margin-right: 16px"
         />
@@ -165,13 +166,12 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import { getAvailableRooms, checkinRoom } from "@/api/roomCalendar";
 import {
   searchMember,
   searchMemberByName,
-  searchMemberByPhone,
-  getAvailableRooms,
-  checkinRoom
-} from "@/api/roomCalendar";
+  searchMemberByPhone
+} from "@/api/hotelMember";
 import dayjs from "dayjs";
 import { ElMessage, ElMessageBox } from "element-plus";
 
@@ -322,7 +322,7 @@ const submit = async () => {
     const res = await checkinRoom({
       userId: selectedMember.value.userId,
       roomId: selectedRoom.value.roomId,
-      checkinDate: today,
+      checkinDate: today.value,
       checkoutDate: checkoutDate.value
     });
     if (res.success) {

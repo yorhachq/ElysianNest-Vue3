@@ -58,6 +58,11 @@ export const refreshTokenApi = (data?: object) => {
 export const getUserInfo = () => {
   return http.request<UserResult>("get", baseUrlApi("sysUser/userInfo"));
 };
+
+export const getUserInfoById = (id?: number) => {
+  return http.request<UserResult>("get", baseUrlApi("sysUser/userInfo/" + id));
+};
+
 /** 更新用户信息 */
 export const updateUserInfo = (data?: object) => {
   return http.request<Result>("put", baseUrlApi("sysUser/update"), {

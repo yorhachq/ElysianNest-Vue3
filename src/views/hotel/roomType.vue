@@ -18,7 +18,7 @@
               >添加房间类型
             </el-button>
             <el-button
-              type="info"
+              type="text"
               :icon="Refresh"
               circle
               style="margin-left: 10px"
@@ -41,12 +41,9 @@
           sortable
         />
         <el-table-column prop="typeName" label="房型名称" align="center" />
-        <el-table-column
-          prop="price"
-          label="房型价格"
-          align="center"
-          sortable
-        />
+        <el-table-column prop="price" label="房型价格" align="center" sortable>
+          <template #default="scope"> {{ scope.row.price }}&nbsp;¥</template>
+        </el-table-column>
         <el-table-column prop="image" label="房型图片" align="center">
           <template #default="scope">
             <img :src="scope.row.image" class="w-20 h-20 object-cover" />
@@ -156,7 +153,7 @@ import {
   deleteRoomType,
   getRoomTypeList
 } from "@/api/roomType";
-import { RoomType } from "@/api/roomType.ts";
+import { RoomType } from "@/api/roomType";
 import { getToken } from "@/utils/auth";
 
 const roomTypeList = ref<RoomType[]>([]);
@@ -172,6 +169,7 @@ const form = reactive<RoomType>({
   price: 0,
   image: "",
   description: "",
+  status: "正常",
   createTime: "",
   updateTime: ""
 });

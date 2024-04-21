@@ -1,6 +1,6 @@
 import { http } from "@/utils/http";
 import { baseUrlApi } from "./utils";
-import { Result } from "@/api/user";
+import type { Result } from "@/api/user";
 
 export interface RoomType {
   roomTypeId: number;

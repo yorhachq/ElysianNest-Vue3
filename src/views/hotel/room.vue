@@ -21,7 +21,7 @@
             <el-button type="primary" @click="handleAdd">添加房间</el-button>
             <!--刷新按钮-->
             <el-button
-              type="info"
+              type="text"
               :icon="Refresh"
               circle
               style="margin-left: 10px"
@@ -95,7 +95,11 @@
           label="楼层"
           align="center"
           sortable
-        />
+        >
+          <template #default="scope">
+            {{ scope.row.floorNumber }}&nbsp;层</template
+          >
+        </el-table-column>
         <el-table-column prop="roomTypeName" label="房间类型" align="center" />
         <el-table-column prop="status" label="房间状态" align="center">
           <template #default="scope">

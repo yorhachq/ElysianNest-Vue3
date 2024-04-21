@@ -1,8 +1,8 @@
 import { $t, transformI18n } from "@/plugins/i18n";
 import Hotel from "@iconify-icons/ri/hotel-line";
-import RoomStatus from "@iconify-icons/ri/calendar-2-line";
-import Room from "@iconify-icons/ic/baseline-hotel"
-import RoomType from "@iconify-icons/ic/baseline-meeting-room"
+import RoomCalendar from "@iconify-icons/ri/calendar-2-line";
+import Room from "@iconify-icons/ic/baseline-hotel";
+import RoomType from "@iconify-icons/ic/baseline-meeting-room";
 
 export default {
   path: "/hotel",
@@ -14,11 +14,11 @@ export default {
   },
   children: [
     {
-      path: "/hotel/roomStatus",
-      name: "RoomStatus",
-      component: () => import("@/views/hotel/roomStatus.vue"),
+      path: "/hotel/roomCalendar",
+      name: "RoomCalendar",
+      component: () => import("@/views/hotel/roomCalendar.vue"),
       meta: {
-        icon: RoomStatus,
+        icon: RoomCalendar,
         title: transformI18n($t("menus.roomStatus"))
       }
     },

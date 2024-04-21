@@ -390,6 +390,9 @@ const greeting = () => {
 const fetchWeatherData = async () => {
   try {
     const result = await getWeather();
+    if (result.data === null) {
+      message("获取到空的天气数据，请检查后端地址是否正确", { type: "error" });
+    }
     Object.assign(weatherData, result.data);
   } catch (error) {
     console.error("获取天气数据失败:", error);

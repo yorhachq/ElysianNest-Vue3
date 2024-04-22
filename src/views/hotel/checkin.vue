@@ -52,7 +52,7 @@
       </template>
 
       <!--数据表格-->
-      <el-table :data="orderList" height="calc(78vh - 200px)" max-height="70vh">
+      <el-table :data="orderList" height="calc(84vh - 173px)" max-height="70vh">
         <el-table-column
           type="index"
           label="序号"
@@ -99,21 +99,17 @@
           label="支付金额"
           align="center"
           sortable
-        />
+        >
+          <template #default="scope"> ¥ {{ scope.row.payment }}</template>
+        </el-table-column>
         <el-table-column label="操作" align="center">
           <template #default="scope">
             <el-button
               type="primary"
-              size="default"
+              size="small"
               @click="handleCheckout(scope.row)"
               >办理退房
             </el-button>
-            <!--            <el-button-->
-            <!--              type="danger"-->
-            <!--              size="small"-->
-            <!--              @click="handleCancel(scope.row.orderId)"-->
-            <!--              >取消订单-->
-            <!--            </el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -125,7 +121,7 @@
           background
           layout="total, sizes, prev, pager, next, jumper, ->,"
           :total="total"
-          :page-sizes="[7, 10, 30, 50]"
+          :page-sizes="[9, 10, 30, 50]"
           :page-size="searchParams.pageSize"
           :current-page="searchParams.pageNum"
           @size-change="handleSizeChange"
@@ -142,7 +138,6 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import {
   HotelOrder,
   checkoutOrder,
-  cancelOrder,
   getCheckinOrderList
 } from "@/api/hotelOrder";
 import { Refresh } from "@element-plus/icons-vue";
@@ -154,7 +149,7 @@ const searchParams = reactive({
   checkinDate: "",
   checkoutDate: "",
   pageNum: 1,
-  pageSize: 7,
+  pageSize: 9,
   status: "入住中"
 });
 
@@ -211,21 +206,6 @@ const handleCheckout = (row: HotelOrder) => {
 };
 
 /**
- * 处理取消订单按钮点击事件
- */
-const handleCancel = (orderId: number) => {
-  ElMessageBox.confirm("确定要取消该订单吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning"
-  }).then(async () => {
-    await cancelOrder(orderId);
-    ElMessage.success("订单已取消");
-    await fetchData();
-  });
-};
-
-/**
  * 处理刷新按钮点击事件
  */
 const handleRefresh = () => {
@@ -233,7 +213,7 @@ const handleRefresh = () => {
   searchParams.checkinDate = "";
   searchParams.checkoutDate = "";
   searchParams.pageNum = 1;
-  searchParams.pageSize = 7;
+  searchParams.pageSize = 9;
   fetchData();
 };
 
@@ -248,9 +228,3 @@ const formatDate = (dateString: string) => {
   return `${year}-${month}-${day}`;
 };
 </script>
-
-<style scoped>
-.checkin-container {
-  @apply p-4;
-}
-</style>

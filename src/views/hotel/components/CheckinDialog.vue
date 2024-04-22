@@ -93,8 +93,8 @@
         <div class="checkin-date">
           <span>入住日期:</span>
           <el-date-picker
-            style="width: 40vh"
             v-model="today"
+            style="width: 40vh"
             type="date"
             placeholder="入住日期"
             :disabled="true"
@@ -104,8 +104,8 @@
         <div class="checkout-date">
           <span>退房日期:</span>
           <el-date-picker
-            style="width: 40vh"
             v-model="checkoutDate"
+            style="width: 40vh"
             type="date"
             placeholder="选择退房日期"
             :disabled-date="disabledDate"
@@ -141,7 +141,7 @@
           {{ dayCount }} 天
         </el-descriptions-item>
         <el-descriptions-item label="支付金额">
-          <span style="color: red">¥ {{ total }}</span>
+          <span class="text-red-500 text-lg">¥ {{ total }}</span>
         </el-descriptions-item>
       </el-descriptions>
     </div>

@@ -15,11 +15,16 @@ export interface HotelOrder {
   payment: number;
   createTime: string;
   updateTime: string;
+  username: string;
+  phone: string;
+  gender: string;
+  typeName: string;
+  days: number;
 }
 
 // 查询酒店订单列表
 export function getHotelOrderList(params: any) {
-  return http.request<Result>("get", baseUrlApi("hotelOrder"), {
+  return http.request<Result>("get", baseUrlApi("hotelOrder/orderList"), {
     params
   });
 }
@@ -28,6 +33,13 @@ export function getHotelOrderList(params: any) {
 export function getCheckinOrderList(params: any) {
   return http.request<Result>("get", baseUrlApi("hotelOrder/checkinList"), {
     params
+  });
+}
+
+// 办理入住
+export function checkinOrder(data: object) {
+  return http.request<Result>("post", baseUrlApi("hotelOrder/checkin"), {
+    data
   });
 }
 

@@ -2,7 +2,7 @@
   <el-dialog v-model="visible" width="800px">
     <template #header>
       <span class="inline-flex"
-        ><h3 class="dialog-title float-left">客房预定</h3>
+        ><h3 class="dialog-title float-left">客房预订</h3>
         <span class="mt-0.5 ml-10 text-gray-500"
           >当前正在办理的日期是：{{ date }}</span
         ></span
@@ -11,7 +11,7 @@
     <!-- 步骤条 -->
     <el-steps class="mb-4" :active="activeStep" finish-status="success" simple>
       <el-step title="选择会员" />
-      <el-step title="预定房间" />
+      <el-step title="预订房间" />
       <el-step title="确定日期" />
       <el-step title="提交订单" />
     </el-steps>
@@ -130,7 +130,7 @@
           {{ dayCount }} 天
         </el-descriptions-item>
         <el-descriptions-item label="支付金额">
-          <span style="color: red">¥ {{ total }}</span>
+          <span class="text-red-500 text-lg">¥ {{ total }}</span>
         </el-descriptions-item>
       </el-descriptions>
     </div>
@@ -310,7 +310,7 @@ const submit = async () => {
     ElMessage.warning("请选择入住日期和退房日期");
     return;
   }
-  ElMessageBox.confirm("确认进行预定吗？", "请仔细核对订单信息", {
+  ElMessageBox.confirm("确认进行预订吗？", "请仔细核对订单信息", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning"
@@ -322,7 +322,7 @@ const submit = async () => {
       checkoutDate: dateRange.value[1]
     });
     if (res.success) {
-      ElMessage.success("预定成功,请关注订单信息");
+      ElMessage.success("预订成功,请关注订单信息");
       emit("success");
       visible.value = false;
     }

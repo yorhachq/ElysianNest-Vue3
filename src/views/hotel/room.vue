@@ -82,8 +82,15 @@
       </template>
 
       <!--数据表格-->
-      <el-table :data="roomList" height="calc(78vh - 200px)" max-height="70vh">
-        <el-table-column prop="roomId" label="序号" align="center" sortable />
+      <el-table :data="roomList" height="calc(84vh - 173px)" max-height="70vh">
+        <el-table-column
+          type="index"
+          prop="roomId"
+          label="序号"
+          width="60"
+          align="center"
+          sortable
+        />
         <el-table-column
           prop="roomNumber"
           label="房间号"
@@ -97,8 +104,8 @@
           sortable
         >
           <template #default="scope">
-            {{ scope.row.floorNumber }}&nbsp;层</template
-          >
+            {{ scope.row.floorNumber }}&nbsp;层
+          </template>
         </el-table-column>
         <el-table-column prop="roomTypeName" label="房间类型" align="center" />
         <el-table-column prop="status" label="房间状态" align="center">
@@ -143,7 +150,7 @@
           background
           layout="total, sizes, prev, pager, next, jumper, ->,"
           :total="total"
-          :page-sizes="[7, 10, 30, 50]"
+          :page-sizes="[9, 10, 30, 50]"
           :page-size="searchParams.pageSize"
           :current-page="searchParams.pageNum"
           @size-change="handleSizeChange"
@@ -246,7 +253,7 @@ const searchParams = reactive({
   roomTypeId: "",
   status: "",
   pageNum: 1,
-  pageSize: 7
+  pageSize: 9
 });
 const roomNumberWithoutFloor = computed({
   get: () => {
@@ -308,6 +315,7 @@ const handlePageChange = (val: number) => {
  */
 const handleAdd = () => {
   dialogTitle.value = "添加房间";
+  form.roomId = 0;
   form.roomNumber = 1;
   form.floorNumber = 1;
   form.roomTypeId = 1;
@@ -371,7 +379,7 @@ const handleRefresh = () => {
   searchParams.roomTypeId = "";
   searchParams.status = "";
   searchParams.pageNum = 1;
-  searchParams.pageSize = 7;
+  searchParams.pageSize = 9;
   fetchData();
 };
 
@@ -400,9 +408,3 @@ const getStatusType = (status: string) => {
   }
 };
 </script>
-
-<style scoped>
-.room-container {
-  @apply p-4;
-}
-</style>

@@ -24,7 +24,7 @@ export function getAvailableRooms(date?: string) {
   );
 }
 
-// 预定房间
+// 预订房间
 export function reserveRoom(data?: object) {
   return http.request<Result>("post", baseUrlApi("hotelOrder/reserve"), {
     data

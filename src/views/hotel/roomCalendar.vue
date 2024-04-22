@@ -40,7 +40,7 @@
                 type="primary"
                 size="small"
                 @click="openReservationDialog(date.date)"
-                >预定
+                >预订
               </el-button>
               <el-button
                 plain
@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <!-- 预定对话框 -->
+      <!-- 预订对话框 -->
       <reservation-dialog
         v-model="reservationVisible"
         :date="selectedDate"

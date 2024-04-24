@@ -27,8 +27,10 @@
         <el-input
           v-model="phone"
           type="number"
+          min="1"
           placeholder="请输入手机号"
           style="margin-right: 16px"
+          :controls="false"
         />
         <el-button type="primary" @click="handleMemberSearch">搜索</el-button>
       </div>

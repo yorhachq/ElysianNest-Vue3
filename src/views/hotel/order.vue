@@ -58,6 +58,9 @@
             <el-form-item label="房间号">
               <el-input
                 v-model="searchForm.roomNumber"
+                type="number"
+                min="1"
+                :controls="false"
                 placeholder="请输入房间号"
                 clearable
                 style="width: 13rem"
@@ -463,7 +466,7 @@ const handleCheckinOrder = async (order: any) => {
 
 const handleCancelOrder = async (orderId: number) => {
   try {
-    await ElMessageBox.confirm("确认取消该订单吗?", "提示", {
+    await ElMessageBox.confirm("确认取消该订单吗?取消订单将全额", "提示", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
       type: "warning"

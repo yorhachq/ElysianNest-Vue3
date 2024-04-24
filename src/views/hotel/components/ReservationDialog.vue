@@ -27,8 +27,10 @@
         <el-input
           v-model="phone"
           type="number"
+          min="1"
           placeholder="请输入手机号"
           style="margin-right: 16px"
+          :controls="false"
         />
         <el-button type="primary" @click="handleMemberSearch">搜索</el-button>
       </div>
@@ -99,8 +101,7 @@
           end-placeholder="退房日期"
           :disabled-date="disabledDate"
           :shortcuts="dateShortcuts"
-          clearable="false"
-          clear-icon=""
+          :clearable="false"
         />
       </div>
     </div>

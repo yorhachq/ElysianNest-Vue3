@@ -21,8 +21,11 @@
               <el-form-item label="房间号">
                 <el-input
                   v-model="searchParams.roomNumber"
+                  type="number"
+                  min="1"
+                  :controls="false"
                   placeholder="请输入房间号"
-                  style="width: 120px"
+                  style="width: 130px"
                   @change="fetchData"
                 />
               </el-form-item>

@@ -43,8 +43,8 @@
                 >预订
               </el-button>
               <el-button
-                plain
                 v-if="isToday(date.date)"
+                plain
                 type="success"
                 size="small"
                 @click="openCheckinDialog(date.date)"

@@ -14,6 +14,7 @@
               min="1"
               clearable
               style="width: 200px; margin-right: 10px"
+              :controls="false"
               @clear="fetchData"
               @keyup.enter="fetchData"
             />

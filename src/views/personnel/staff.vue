@@ -136,13 +136,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="创建时间"
-          align="center"
-          width="105"
-          sortable
-        >
+        <el-table-column prop="createTime" label="创建时间" align="center" width="105" sortable>
           <template #default="{ row }">
             {{ formatTime(row.createTime) }}
           </template>
@@ -260,6 +254,13 @@
               :label="role.roleName"
               :value="role.roleId"
             />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="账户状态" prop="status">
+          <el-select v-model="editForm.status" placeholder="请选择账户状态">
+            <el-option label="正常" value="正常" />
+            <el-option label="封禁" value="封禁" />
+            <el-option label="冻结" value="冻结" />
           </el-select>
         </el-form-item>
       </el-form>

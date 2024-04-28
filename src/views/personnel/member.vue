@@ -108,20 +108,8 @@
             {{ row.gender === "male" ? "男" : "女" }}
           </template>
         </el-table-column>
-        <el-table-column
-          prop="memberLevel"
-          label="会员等级"
-          align="center"
-          width="105"
-          sortable
-        />
-        <el-table-column
-          prop="balance"
-          label="账户余额"
-          align="center"
-          width="105"
-          sortable
-        >
+        <el-table-column prop="memberLevel" label="会员等级" align="center" width="105" sortable/>
+        <el-table-column prop="balance" label="账户余额" align="center" width="105" sortable>
           <template #default="{ row }"> ¥ {{ row.balance }}</template>
         </el-table-column>
         <el-table-column prop="email" label="邮箱" width="180" align="center" />
@@ -143,13 +131,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="创建时间"
-          align="center"
-          width="105"
-          sortable
-        >
+        <el-table-column prop="createTime" label="创建时间" align="center" width="105" sortable>
           <template #default="{ row }">
             {{ formatTime(row.createTime) }}
           </template>

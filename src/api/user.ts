@@ -60,7 +60,7 @@ export const getUserInfo = () => {
 };
 
 export const getUserInfoById = (id?: number) => {
-  return http.request<UserResult>("get", baseUrlApi("sysUser/userInfo/" + id));
+  return http.request<UserResult>("get", baseUrlApi(`sysUser/userInfo/${id}`));
 };
 
 /** 更新用户信息 */
@@ -81,9 +81,17 @@ export const sendEmailCodeService = (data?: object) => {
 export const resetPwdService = (data?: object) => {
   return http.request<Result>("post", baseUrlApi("sysUser/resetPwd"), { data });
 };
+
 /** 修改密码 */
 export const updatePwdService = (data?: object) => {
   return http.request<Result>("patch", baseUrlApi("sysUser/updatePwd"), {
+    data
+  });
+};
+
+/** 管理员更新用户密码 */
+export const updatePwdByAdmin = (data?: object) => {
+  return http.request<Result>("patch", baseUrlApi("sysUser/updatePwdByAdmin"), {
     data
   });
 };
@@ -113,3 +121,40 @@ export const getWeather = (data?: object) => {
     data
   });
 };
+
+/** 员工注册 */
+export const registerUser = (params?: object) => {
+  return http.request<Result>("post", baseUrlApi("sysUser/register"), {
+    params
+  });
+};
+
+/** 获取员工列表 */
+export const getUserList = (params?: object) => {
+  return http.request<Result>("get", baseUrlApi("sysUser/list"), {
+    params
+  });
+};
+
+/**
+ * 更新员工信息
+ */
+export function updateUserByAdmin(data: object) {
+  return http.request<Result>("put", baseUrlApi("sysUser/updateByAdmin"), {
+    data
+  });
+}
+
+/**
+ * 删除员工
+ */
+export function deleteUser(userId: number) {
+  return http.request<Result>("delete", baseUrlApi(`sysUser/delete/${userId}`));
+}
+
+/**
+ * 获取角色列表
+ */
+export function getRoleList() {
+  return http.request<Result>("get", baseUrlApi("sysUser/roles"));
+}

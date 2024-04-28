@@ -90,23 +90,29 @@
         height="calc(84vh - 161px)"
         max-height="70vh"
       >
+        <el-table-column label="序号" type="index" width="80" align="center" />
         <el-table-column label="头像" width="80" align="center">
           <template #default="{ row }">
             <el-avatar :src="row.avatar" />
           </template>
         </el-table-column>
         <el-table-column prop="username" label="会员名" align="center" />
-        <el-table-column prop="phone" label="手机号" align="center" />
+        <el-table-column
+          prop="phone"
+          label="手机号"
+          width="120"
+          align="center"
+        />
         <el-table-column label="性别" align="center">
           <template #default="{ row }">
             {{ row.gender === "male" ? "男" : "女" }}
           </template>
         </el-table-column>
-        <el-table-column prop="memberLevel" label="会员等级" align="center" />
-        <el-table-column prop="balance" label="账户余额" align="center">
-          <template #default="{ row }"> ¥ {{ row.balance }} </template>
+        <el-table-column prop="memberLevel" label="会员等级" align="center" width="105" sortable/>
+        <el-table-column prop="balance" label="账户余额" align="center" width="105" sortable>
+          <template #default="{ row }"> ¥ {{ row.balance }}</template>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" align="center" />
+        <el-table-column prop="email" label="邮箱" width="180" align="center" />
         <el-table-column label="账户状态" align="center">
           <template #default="{ row }">
             <el-switch
@@ -125,7 +131,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center">
+        <el-table-column prop="createTime" label="创建时间" align="center" width="105" sortable>
           <template #default="{ row }">
             {{ formatTime(row.createTime) }}
           </template>
@@ -147,8 +153,8 @@
               <el-button
                 type="danger"
                 size="small"
-                @click="handleDelete(row.userId)"
                 :disabled="row.balance !== 0"
+                @click="handleDelete(row.userId)"
               >
                 删除
               </el-button>
@@ -194,10 +200,26 @@
     <!--编辑会员对话框-->
     <el-dialog v-model="editDialogVisible" title="编辑会员" width="400px">
       <el-form ref="editFormRef" :model="editForm" :rules="editFormRules">
+        <el-form-item label="头像">
+          <el-upload
+            class="avatar-uploader"
+            action="/api/upload"
+            :headers="{ Authorization: getToken().accessToken }"
+            :auto-upload="true"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="editForm.avatar" :src="editForm.avatar" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon">
+              <Plus />
+            </el-icon>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="editForm.username" />
         </el-form-item>
-        <el-form-item label="性别">
+        <el-form-item label="性别" class="ml-6">
           <el-radio-group v-model="editForm.gender">
             <el-radio label="male">男</el-radio>
             <el-radio label="female">女</el-radio>
@@ -210,12 +232,20 @@
             oninput="value=value.replace(/[^\d]/g,'')"
           />
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item label="邮&emsp;箱" prop="email">
           <el-input v-model="editForm.email" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
+          <el-button
+            plain
+            type="primary"
+            size="default"
+            @click="handleUpdatePwd(editForm.userId)"
+          >
+            修改密码
+          </el-button>
           <el-button @click="editDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="handleEditConfirm">确定</el-button>
         </span>
@@ -245,6 +275,38 @@
         </span>
       </template>
     </el-dialog>
+
+    <!--修改密码对话框-->
+    <el-dialog v-model="updatePwdDialogVisible" title="修改密码" width="400px">
+      <el-form
+        ref="updatePwdFormRef"
+        :model="updatePwdForm"
+        :rules="updatePwdFormRules"
+      >
+        <el-form-item label="新&ensp;密&ensp;码" prop="newPwd">
+          <el-input
+            v-model="updatePwdForm.newPwd"
+            type="password"
+            show-password
+          />
+        </el-form-item>
+        <el-form-item label="确认密码" prop="confirmPwd">
+          <el-input
+            v-model="updatePwdForm.confirmPwd"
+            type="password"
+            show-password
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="updatePwdDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleUpdatePwdConfirm"
+            >确定</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -260,7 +322,13 @@ import {
   rechargeMember,
   getMemberInfo
 } from "@/api/hotelMember";
+import { updatePwdByAdmin } from "@/api/user";
+import { Plus } from "@element-plus/icons-vue";
+import { getToken } from "@/utils/auth";
 
+defineOptions({
+  name: "Member"
+});
 const searchParams = reactive({
   username: "",
   gender: "",
@@ -293,7 +361,8 @@ const editForm = reactive({
   username: "",
   gender: "",
   phone: "",
-  email: ""
+  email: "",
+  avatar: ""
 });
 const editFormRef = ref<FormInstance>();
 const editFormRules: FormRules = {
@@ -324,11 +393,37 @@ const rechargeForm = reactive({
 });
 const rechargeFormRef = ref<FormInstance>();
 
+const updatePwdDialogVisible = ref(false);
+const updatePwdForm = reactive({
+  userId: 0,
+  newPwd: "",
+  confirmPwd: ""
+});
+const updatePwdFormRef = ref<FormInstance>();
+const updatePwdFormRules: FormRules = {
+  newPwd: [
+    { required: true, message: "请输入新密码", trigger: "blur" },
+    { min: 5, max: 16, message: "密码长度应为5~16位", trigger: "blur" }
+  ],
+  confirmPwd: [
+    { required: true, message: "请再次输入新密码", trigger: "blur" },
+    {
+      validator: (rule, value, callback) => {
+        if (value !== updatePwdForm.newPwd) {
+          callback(new Error("两次输入的密码不一致"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur"
+    }
+  ]
+};
+
 /**
  * 获取会员列表数据
  */
 const fetchData = async () => {
-  console.log(searchParams);
   const res = await getMemberList(searchParams);
   memberList.value = res.data.items;
   total.value = res.data.total;
@@ -387,10 +482,33 @@ const handleAddConfirm = async () => {
 };
 
 /**
+ * 上传头像成功回调
+ */
+const handleAvatarSuccess = response => {
+  // 上传头像成功后的回调
+  editForm.avatar = response.data;
+};
+
+/**
+ * 上传头像前的校验
+ */
+const beforeAvatarUpload = (rawFile: any) => {
+  if (rawFile.type !== "image/jpeg" && rawFile.type !== "image/png") {
+    ElMessage.error("头像必须是 JPG/PNG 格式!");
+    return false;
+  } else if (rawFile.size / 1024 / 1024 > 5) {
+    ElMessage.error("头像大小不能超过 5MB!");
+    return false;
+  }
+  return true;
+};
+
+/**
  * 处理编辑会员按钮点击事件
  */
 const handleEdit = (row: any) => {
   editForm.userId = row.userId;
+  editForm.avatar = row.avatar;
   editForm.username = row.username;
   editForm.gender = row.gender;
   editForm.phone = row.phone;
@@ -477,7 +595,62 @@ const formatTime = (time: string) => {
   return time.replace("T", " ");
 };
 
+/**
+ * 处理修改密码按钮点击事件
+ */
+const handleUpdatePwd = (userId: number) => {
+  updatePwdForm.userId = userId;
+  updatePwdForm.newPwd = "";
+  updatePwdForm.confirmPwd = "";
+  updatePwdDialogVisible.value = true;
+};
+
+/**
+ * 处理修改密码对话框确认事件
+ */
+const handleUpdatePwdConfirm = async () => {
+  await updatePwdFormRef.value?.validate(async valid => {
+    if (valid) {
+      await updatePwdByAdmin({
+        userId: updatePwdForm.userId.toString(),
+        newPwd: updatePwdForm.newPwd
+      });
+      ElMessage.success("密码修改成功");
+      updatePwdDialogVisible.value = false;
+      await fetchData();
+    }
+  });
+};
+
 onMounted(() => {
   fetchData();
 });
 </script>
+<style scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>

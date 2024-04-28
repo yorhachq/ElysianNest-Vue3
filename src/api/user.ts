@@ -117,7 +117,7 @@ export const getIpRegion = (data?: object) => {
 
 /** 获取实时天气 */
 export const getWeather = (data?: object) => {
-  return http.request<Result>("get", baseUrlApi("/sysUser/weather"), {
+  return http.request<Result>("get", baseUrlApi("sysUser/weather"), {
     data
   });
 };

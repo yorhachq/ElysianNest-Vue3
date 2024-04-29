@@ -11,7 +11,6 @@
               type="text"
               :icon="Refresh"
               circle
-              style="margin-left: 10px"
               @click="handleRefresh"
             />
           </div>
@@ -33,7 +32,7 @@
                   v-model="searchParams.roleCode"
                   placeholder="请选择操作人角色"
                   clearable
-                  style="width: 180px"
+                  style="width: 160px"
                   @clear="fetchData"
                   @change="fetchData"
                 >
@@ -48,7 +47,7 @@
               <el-form-item>
                 <el-input
                   v-model="searchParams.address"
-                  placeholder="请输入请求来源地址查询"
+                  placeholder="请输入请求来源回车查询"
                   clearable
                   style="width: 180px"
                   @clear="fetchData"
@@ -58,7 +57,7 @@
               <el-form-item>
                 <el-input
                   v-model="searchParams.action"
-                  placeholder="请输入操作行为查询"
+                  placeholder="请输入操作行为回车查询"
                   clearable
                   style="width: 180px"
                   @clear="fetchData"
@@ -105,7 +104,7 @@
           align="center"
           width="180"
         />
-        <el-table-column label="请求方法" align="center">
+        <el-table-column label="请求方法" align="center" width="180">
           <template #default="{ row }">
             <el-tag type="info" effect="plain">
               <el-tooltip

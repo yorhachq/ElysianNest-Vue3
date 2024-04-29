@@ -10,3 +10,12 @@ export function getLogList(params: any) {
     params
   });
 }
+
+/**
+ * 获取充值记录列表
+ */
+export function getRechargeList(params: any) {
+  return http.request<Result>("get", baseUrlApi("hotelRechargeRecords"), {
+    params
+  });
+}

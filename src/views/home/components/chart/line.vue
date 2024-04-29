@@ -48,6 +48,7 @@ setOptions({
       smooth: true,
       color: props.color,
       lineStyle: {
+        width: 3,
         shadowOffsetY: 3,
         shadowBlur: 7,
         shadowColor: props.color

@@ -90,11 +90,11 @@ const optionsBasis: Array<OptionsType> = [
         </el-card>
       </re-col>
 
-      <!--页面左下客流量概览柱状图-->
+      <!--页面下方客流量概览柱状图-->
       <re-col
         v-motion
         class="mb-[18px]"
-        :value="18"
+        :value="24"
         :xs="24"
         :initial="{
           opacity: 0,
@@ -122,8 +122,8 @@ const optionsBasis: Array<OptionsType> = [
         </el-card>
       </re-col>
 
-      <!--页面右下统计饼状图(待完成)-->
-      <re-col
+      <!--页面右下统计饼状图-->
+      <!--      <re-col
         v-motion
         class="mb-[18px]"
         :value="6"
@@ -142,10 +142,10 @@ const optionsBasis: Array<OptionsType> = [
       >
         <el-card shadow="never">
           <el-card style="max-width: 480px">
-            <p class="text item">这里可以放各类统计饼状图</p>
+            <p class="text item">各类统计饼状图</p>
           </el-card>
         </el-card>
-      </re-col>
+      </re-col>-->
     </el-row>
   </div>
 </template>

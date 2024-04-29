@@ -76,7 +76,7 @@ watch(
         {
           name: "入住人数",
           type: "bar",
-          barWidth: 10,
+          barWidth: 50,
           itemStyle: {
             color: "#41b6ff",
             borderRadius: [10, 10, 0, 0]
@@ -86,9 +86,9 @@ watch(
         {
           name: "退房人数",
           type: "bar",
-          barWidth: 10,
+          barWidth: 50,
           itemStyle: {
-            color: "#e86033ce",
+            color: "rgba(255,130,5,0.81)",
             borderRadius: [10, 10, 0, 0]
           },
           data: props.checkoutData

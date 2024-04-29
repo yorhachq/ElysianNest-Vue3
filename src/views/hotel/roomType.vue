@@ -31,7 +31,7 @@
       <!--数据表格-->
       <el-table
         :data="roomTypeList"
-        height="calc(78vh - 200px)"
+        height="calc(82vh - 204px)"
         max-height="70vh"
       >
         <el-table-column
@@ -44,17 +44,23 @@
         <el-table-column prop="price" label="房型价格" align="center" sortable>
           <template #default="scope"> {{ scope.row.price }}&nbsp;¥</template>
         </el-table-column>
-        <el-table-column prop="image" label="房型图片" align="center">
+        <el-table-column prop="image" label="房型图片" align="center" width="200rem">
           <template #default="scope">
-            <img :src="scope.row.image" class="w-20 h-20 object-cover" />
+            <img :src="scope.row.image" class="w-40 h-20 object-cover" />
           </template>
         </el-table-column>
-        <el-table-column prop="description" label="房型描述" align="center" />
+        <el-table-column
+          prop="description"
+          label="房型描述"
+          align="center"
+          width="300rem"
+        />
         <el-table-column
           prop="updateTime"
           label="更新时间"
           align="center"
           sortable
+          width="154px"
         >
           <template #default="scope">
             {{ scope.row.updateTime.replace("T", "&nbsp;") }}
@@ -119,7 +125,11 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeUpload"
           >
-            <img v-if="form.image" :src="form.image" class="avatar" />
+            <img
+              v-if="form.image"
+              :src="form.image"
+              class="avatar preview-image"
+            />
             <el-icon v-else class="image-uploader-icon">
               <Plus />
             </el-icon>
@@ -275,8 +285,8 @@ const handleSubmit = async () => {
 }
 
 .image-uploader .avatar {
-  width: 178px;
-  height: 178px;
+  width: 360px;
+  height: 180px;
   display: block;
 }
 
@@ -293,11 +303,10 @@ const handleSubmit = async () => {
   border-color: var(--el-color-primary);
 }
 
-.el-icon.image-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
+.preview-image {
+  width: 100%; /* 让图片宽度充满容器 */
+  height: auto; /* 高度自动调整以保持宽高比 */
+  object-fit: cover; /* 保持宽高比的同时填充容器，可能会裁剪图片 */
+  display: block; /* 确保图片作为块级元素显示 */
 }
 </style>

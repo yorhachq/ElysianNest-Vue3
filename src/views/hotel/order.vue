@@ -169,7 +169,7 @@
         <el-table-column
           prop="typeName"
           label="房型"
-          width="90"
+          width="100"
           align="center"
           :resizable="false"
         />

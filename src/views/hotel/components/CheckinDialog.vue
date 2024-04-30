@@ -11,8 +11,8 @@
     <!-- 步骤条 -->
     <el-steps class="mb-4" :active="activeStep" finish-status="success" simple>
       <el-step title="选择会员" />
-      <el-step title="入住房间" />
       <el-step title="退房日期" />
+      <el-step title="入住房间" />
       <el-step title="提交订单" />
     </el-steps>
 
@@ -68,29 +68,8 @@
       </div>
     </div>
 
-    <!-- 步骤2: 选择房间 -->
+    <!-- 步骤2: 选择时间区间 -->
     <div v-if="activeStep === 1">
-      <div class="room-list mt-4">
-        <div v-for="(rooms, floor) in roomsByFloor" :key="floor" class="mb-4">
-          <h3 class="text-xl font-bold mb-2">{{ floor }}层</h3>
-          <el-radio-group v-model="selectedRoom" size="large">
-            <el-radio-button
-              v-for="room in rooms"
-              :key="room.roomId"
-              :label="room"
-              border
-            >
-              <div class="mt-0.5">{{ room.roomNumber }}</div>
-              <div class="mt-0.5">{{ room.roomType.typeName }}</div>
-              <div class="mt-0.5">¥{{ room.roomType.price }} / 晚</div>
-            </el-radio-button>
-          </el-radio-group>
-        </div>
-      </div>
-    </div>
-
-    <!-- 步骤3: 选择时间区间 -->
-    <div v-if="activeStep === 2">
       <div class="date-range">
         <div class="checkin-date">
           <span>入住日期:</span>
@@ -115,6 +94,30 @@
             value-format="YYYY-MM-DD"
           />
         </div>
+      </div>
+    </div>
+
+    <!-- 步骤3: 选择房间 -->
+    <div v-if="activeStep === 2">
+      <div v-if="roomList.length > 0" class="room-list mt-4">
+        <div v-for="(rooms, floor) in roomsByFloor" :key="floor" class="mb-4">
+          <h3 class="text-xl font-bold mb-2">{{ floor }}层</h3>
+          <el-radio-group v-model="selectedRoom" size="large">
+            <el-radio-button
+              v-for="room in rooms"
+              :key="room.roomId"
+              :label="room"
+              border
+            >
+              <div class="mt-0.5">{{ room.roomNumber }}</div>
+              <div class="mt-0.5">{{ room.roomType.typeName }}</div>
+              <div class="mt-0.5">¥{{ room.roomType.price }} / 晚</div>
+            </el-radio-button>
+          </el-radio-group>
+        </div>
+      </div>
+      <div v-else class="text-center text-gray-500">
+        当前日期区间没有可用房间,请重新选择日期
       </div>
     </div>
 
@@ -213,9 +216,9 @@ const canNext = computed(() => {
   if (activeStep.value === 0) {
     return selectedMember.value !== null;
   } else if (activeStep.value === 1) {
-    return selectedRoom.value !== null;
-  } else if (activeStep.value === 2) {
     return checkoutDate.value !== null && checkoutDate.value.length > 0;
+  } else if (activeStep.value === 2) {
+    return selectedRoom.value !== null;
   }
   return true;
 });
@@ -295,10 +298,14 @@ const prevStep = () => {
   activeStep.value--;
 };
 
-const nextStep = () => {
-  if (checkoutDate.value === today.value) {
+const nextStep = async () => {
+  if (activeStep.value === 1 && checkoutDate.value === today.value) {
     ElMessage.warning("退房日期不能与入住日期相同");
   } else {
+    if (activeStep.value === 1) {
+      // 选择日期区间后,获取可用房间列表
+      await fetchRooms();
+    }
     activeStep.value++;
   }
 };
@@ -336,9 +343,14 @@ const submit = async () => {
 };
 
 const fetchRooms = async () => {
-  const res = await getAvailableRooms(props.date);
-  if (res.success) {
-    roomList.value = res.data;
+  if (props.date && checkoutDate.value) {
+    const res = await getAvailableRooms({
+      checkinDate: props.date,
+      checkoutDate: checkoutDate.value
+    });
+    if (res.success) {
+      roomList.value = res.data;
+    }
   }
 };
 
@@ -346,8 +358,6 @@ watch(
   () => props.modelValue,
   val => {
     if (val) {
-      fetchRooms();
-    } else {
       resetForm();
     }
   }

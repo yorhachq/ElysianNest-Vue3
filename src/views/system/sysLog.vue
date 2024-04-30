@@ -81,7 +81,7 @@
           prop="usrName"
           label="操作人"
           align="center"
-          width="160"
+          width="120"
         />
         <el-table-column
           prop="roleName"
@@ -104,7 +104,7 @@
           align="center"
           width="180"
         />
-        <el-table-column label="请求方法" align="center" width="180">
+        <el-table-column label="请求方法" align="center" width="206">
           <template #default="{ row }">
             <el-tag type="info" effect="plain">
               <el-tooltip

@@ -466,11 +466,15 @@ const handleCheckinOrder = async (order: any) => {
 
 const handleCancelOrder = async (orderId: number) => {
   try {
-    await ElMessageBox.confirm("确认取消该订单吗?取消订单将全额", "提示", {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "warning"
-    });
+    await ElMessageBox.confirm(
+      "取消订单后，支付金额将原路退回至账户余额，是否继续?",
+      "确认取消该订单吗?",
+      {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }
+    );
     await cancelOrder(orderId);
     ElMessage.success("订单取消成功");
     await fetchOrderList();

@@ -11,8 +11,8 @@
     <!-- 步骤条 -->
     <el-steps class="mb-4" :active="activeStep" finish-status="success" simple>
       <el-step title="选择会员" />
-      <el-step title="预订房间" />
       <el-step title="确定日期" />
+      <el-step title="预订房间" />
       <el-step title="提交订单" />
     </el-steps>
 
@@ -68,9 +68,26 @@
       </div>
     </div>
 
-    <!-- 步骤2: 选择房间 -->
+    <!-- 步骤2: 选择时间区间 -->
     <div v-if="activeStep === 1">
-      <div class="room-list mt-4">
+      <div class="date-range w-full text-center">
+        <el-date-picker
+          v-model="dateRange"
+          style="width: 100vh"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="入住日期"
+          end-placeholder="退房日期"
+          :disabled-date="disabledDate"
+          :shortcuts="dateShortcuts"
+          :clearable="false"
+        />
+      </div>
+    </div>
+
+    <!-- 步骤3: 选择房间 -->
+    <div v-if="activeStep === 2">
+      <div v-if="roomList.length > 0" class="room-list mt-4">
         <div v-for="(rooms, floor) in roomsByFloor" :key="floor" class="mb-4">
           <h3 class="text-xl font-bold mb-2">{{ floor }}层</h3>
           <el-radio-group v-model="selectedRoom" size="large">
@@ -87,22 +104,8 @@
           </el-radio-group>
         </div>
       </div>
-    </div>
-
-    <!-- 步骤3: 选择时间区间 -->
-    <div v-if="activeStep === 2">
-      <div class="date-range w-full text-center">
-        <el-date-picker
-          v-model="dateRange"
-          style="width: 100vh"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="入住日期"
-          end-placeholder="退房日期"
-          :disabled-date="disabledDate"
-          :shortcuts="dateShortcuts"
-          :clearable="false"
-        />
+      <div v-else class="text-center text-gray-500">
+        当前日期区间没有可用房间,请重新选择日期
       </div>
     </div>
 
@@ -197,9 +200,9 @@ const canNext = computed(() => {
   if (activeStep.value === 0) {
     return selectedMember.value !== null;
   } else if (activeStep.value === 1) {
-    return selectedRoom.value !== null;
-  } else if (activeStep.value === 2) {
     return dateRange.value.length === 2;
+  } else if (activeStep.value === 2) {
+    return selectedRoom.value !== null;
   }
   return true;
 });
@@ -285,15 +288,19 @@ const prevStep = () => {
   activeStep.value--;
 };
 
-const nextStep = () => {
+const nextStep = async () => {
   if (
-    dateRange.value.length > 0
+    activeStep.value === 1 && dateRange.value.length > 0
       ? dateRange.value[0].toLocaleDateString() ===
         dateRange.value[1].toLocaleDateString()
       : false
   ) {
     ElMessage.warning("退房日期不能与入住日期相同");
   } else {
+    if (activeStep.value === 1) {
+      // 选择日期区间后,获取可用房间列表
+      await fetchRooms();
+    }
     activeStep.value++;
   }
 };
@@ -331,9 +338,16 @@ const submit = async () => {
 };
 
 const fetchRooms = async () => {
-  const res = await getAvailableRooms(props.date);
-  if (res.success) {
-    roomList.value = res.data;
+  if (dateRange.value.length === 2) {
+    const checkinDate = dayjs(dateRange.value[0]).format("YYYY-MM-DD");
+    const checkoutDate = dayjs(dateRange.value[1]).format("YYYY-MM-DD");
+    const res = await getAvailableRooms({
+      checkinDate,
+      checkoutDate
+    });
+    if (res.success) {
+      roomList.value = res.data;
+    }
   }
 };
 
@@ -341,8 +355,6 @@ watch(
   () => props.modelValue,
   val => {
     if (val) {
-      fetchRooms();
-    } else {
       resetForm();
     }
   }

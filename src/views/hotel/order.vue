@@ -153,7 +153,6 @@
         <el-table-column
           prop="orderNum"
           label="订单号"
-          width="134"
           align="center"
           :resizable="false"
           sortable
@@ -219,7 +218,6 @@
         <el-table-column
           prop="createTime"
           label="下单时间"
-          width="200"
           align="center"
           :resizable="false"
           sortable
@@ -435,7 +433,7 @@ const resetSearch = () => {
   searchForm.phone = "";
   searchForm.roomNumber = "";
   searchForm.pageNum = 1;
-  searchForm.pageSize = 10;
+  searchForm.pageSize = 9;
   fetchOrderList();
 };
 

@@ -104,7 +104,7 @@
           align="center"
           width="180"
         />
-        <el-table-column label="请求方法" align="center" width="206">
+        <el-table-column label="请求方法" align="center">
           <template #default="{ row }">
             <el-tag type="info" effect="plain">
               <el-tooltip
@@ -132,7 +132,6 @@
           prop="createTime"
           label="操作时间"
           align="center"
-          width="180"
           sortable
         >
           <template #default="{ row }">

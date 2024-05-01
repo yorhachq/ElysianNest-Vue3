@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, markRaw, onMounted } from "vue";
+import { ref } from "vue";
 import ReCol from "@/components/ReCol";
 import { useDark } from "./utils";
 import { ReNormalCountTo } from "@/components/ReCountTo";

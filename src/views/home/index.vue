@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ref, markRaw, onMounted } from "vue";
 import ReCol from "@/components/ReCol";
-import { useDark, randomGradient } from "./utils";
-import PureTable from "./components/table/index.vue";
+import { useDark } from "./utils";
 import { ReNormalCountTo } from "@/components/ReCountTo";
-import { useRenderFlicker } from "@/components/ReFlicker";
 import { barChart, lineChart, roundChart } from "./components/chart";
 import Segmented, { type OptionsType } from "@/components/ReSegmented";
 import { chartData, barChartData } from "./data";

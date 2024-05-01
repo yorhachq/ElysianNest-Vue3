@@ -51,7 +51,7 @@ const chartData = [
   }
 ];
 // 异步填充今日图表数据
-await getTodayDataService().then(({ data }) => {
+getTodayDataService().then(({ data }) => {
   // 若获取到空数据，则使用默认数据
   if (null === data) {
     message("今日数据为空，使用预设数据", { type: "warning" });
@@ -78,7 +78,7 @@ const barChartData = [
   }
 ];
 // 异步填充柱形图数据
-await getWeekDataService().then(({ data }) => {
+getWeekDataService().then(({ data }) => {
   // 若获取到空数据，则使用默认数据
   if (null === data) {
     message("客流量概览数据为空，使用预设数据", { type: "warning" });

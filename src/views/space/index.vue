@@ -13,14 +13,14 @@
           <p class="text-gray-500">{{ userInfo.email }}</p>
         </div>
         <!-- 右侧今日处理事件数 -->
-        <div class="ml-auto">
-          <el-tag type="success" size="large" style="font-size: medium"
-            >今日已处理事件数：
-            <el-tag effect="dark" type="success">
-              {{ taskCount }}
-            </el-tag>
-          </el-tag>
-        </div>
+<!--        <div class="ml-auto">-->
+<!--          <el-tag type="success" size="large" style="font-size: medium"-->
+<!--            >今日已处理事件数：-->
+<!--            <el-tag effect="dark" type="success">-->
+<!--              {{ taskCount }}-->
+<!--            </el-tag>-->
+<!--          </el-tag>-->
+<!--        </div>-->
       </div>
       <template #footer>
         <!-- 天气模块 -->

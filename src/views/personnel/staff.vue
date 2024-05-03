@@ -423,6 +423,8 @@ const fetchData = async () => {
  */
 const fetchRoleList = async () => {
   const res = await getRoleList();
+  // 去除其中的酒店顾客角色
+  res.data = res.data.filter((role: any) => role.roleCode !== "guest");
   roleList.value = res.data;
 };
 

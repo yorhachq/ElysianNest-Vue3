@@ -5,6 +5,8 @@
         <div class="header">
           <span class="font-bold text-lg">订单管理</span>
           <div class="float-end">
+            <!--导出Excel-->
+            <el-button type="primary" @click="exportData">导出Excel</el-button>
             <!--展开/折叠按钮-->
             <el-button
               type="primary"
@@ -353,6 +355,8 @@
 </template>
 
 <script setup lang="ts">
+import { exportExcel } from "@/views/components/exportExcel";
+
 defineOptions({
   name: "Order"
 });
@@ -399,6 +403,34 @@ const fetchOrderList = async () => {
   searchForm.createTimeRange = createTimeRange;
   orderList.value = res.data.items;
   total.value = res.data.total;
+};
+
+const allTableData = ref([]);
+/**
+ * 获取所有数据(导出用)
+ */
+const getAllTableData = async () => {
+  try {
+    const res = await getHotelOrderList({
+      ...searchForm,
+      pageNum: 1,
+      pageSize: total.value
+    });
+    allTableData.value = res.data.items;
+  } catch (error) {
+    console.error("数据导出失败:", error);
+  }
+};
+
+/**
+ * 导出数据
+ */
+const exportData = async () => {
+  await getAllTableData();
+  exportExcel({
+    data: allTableData.value,
+    fileName: "order"
+  });
 };
 
 /**

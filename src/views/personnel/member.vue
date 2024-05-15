@@ -17,6 +17,8 @@
             />
             <!--添加会员按钮-->
             <el-button type="primary" @click="handleAdd">添加会员</el-button>
+            <!--导出Excel-->
+            <el-button type="primary" @click="exportData">导出Excel</el-button>
             <!--刷新按钮-->
             <el-button
               type="text"
@@ -325,6 +327,8 @@ import {
 import { updatePwdByAdmin } from "@/api/user";
 import { Plus } from "@element-plus/icons-vue";
 import { getToken } from "@/utils/auth";
+import {getRechargeList} from "@/api/log";
+import {exportExcel} from "@/views/components/exportExcel";
 
 defineOptions({
   name: "Member"
@@ -427,6 +431,34 @@ const fetchData = async () => {
   const res = await getMemberList(searchParams);
   memberList.value = res.data.items;
   total.value = res.data.total;
+};
+
+const allTableData = ref([]);
+/**
+ * 获取所有数据(导出用)
+ */
+const getAllTableData = async () => {
+  try {
+    const res = await getMemberList({
+      ...searchParams,
+      pageNum: 1,
+      pageSize: total.value
+    });
+    allTableData.value = res.data.items;
+  } catch (error) {
+    console.error("数据导出失败:", error);
+  }
+};
+
+/**
+ * 导出数据
+ */
+const exportData = async () => {
+  await getAllTableData();
+  exportExcel({
+    data: allTableData.value,
+    fileName: "member"
+  });
 };
 
 /**

@@ -9,14 +9,16 @@
             <!--搜索框-->
             <el-input
               v-model="searchParams.username"
-              placeholder="请输入用户名查询"
+              placeholder="请输入用户名"
               clearable
-              style="width: 140px; margin-right: 30px"
+              style="width: 110px; margin-right: 30px"
               @clear="fetchData"
               @keyup.enter="fetchData"
             />
             <!--添加会员按钮-->
             <el-button type="primary" @click="handleAdd">添加员工</el-button>
+            <!--导出Excel-->
+            <el-button type="primary" @click="exportData">导出Excel</el-button>
             <!--刷新按钮-->
             <el-button
               type="text"
@@ -72,8 +74,8 @@
               <el-form-item>
                 <el-input
                   v-model="searchParams.phone"
-                  placeholder="请输入手机号查询"
-                  style="width: 140px"
+                  placeholder="请输入手机号"
+                  style="width: 110px"
                   maxlength="11"
                   oninput="value=value.replace(/[^\d]/g,'')"
                   @change="fetchData"
@@ -82,8 +84,8 @@
               <el-form-item>
                 <el-input
                   v-model="searchParams.email"
-                  placeholder="请输入邮箱查询"
-                  style="width: 140px"
+                  placeholder="请输入邮箱"
+                  style="width: 110px"
                   @change="fetchData"
                 />
               </el-form-item>
@@ -136,7 +138,13 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center" width="105" sortable>
+        <el-table-column
+          prop="createTime"
+          label="创建时间"
+          align="center"
+          width="105"
+          sortable
+        >
           <template #default="{ row }">
             {{ formatTime(row.createTime) }}
           </template>
@@ -319,6 +327,7 @@ import {
   updatePwdByAdmin
 } from "@/api/user";
 import { getToken } from "@/utils/auth";
+import { exportExcel } from "@/views/components/exportExcel";
 
 const searchParams = reactive({
   username: "",
@@ -416,6 +425,35 @@ const fetchData = async () => {
   const res = await getUserList(searchParams);
   userList.value = res.data.items;
   total.value = res.data.total;
+};
+
+const allTableData = ref([]);
+/**
+ * 获取所有数据(导出用)
+ */
+const getAllTableData = async () => {
+  console.log(searchParams);
+  try {
+    const res = await getUserList({
+      ...searchParams,
+      pageNum: 1,
+      pageSize: total.value
+    });
+    allTableData.value = res.data.items;
+  } catch (error) {
+    console.error("数据导出失败:", error);
+  }
+};
+
+/**
+ * 导出数据
+ */
+const exportData = async () => {
+  await getAllTableData();
+  exportExcel({
+    data: allTableData.value,
+    fileName: "staff"
+  });
 };
 
 /**

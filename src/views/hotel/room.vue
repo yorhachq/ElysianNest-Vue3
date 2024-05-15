@@ -20,6 +20,8 @@
             />
             <!--添加房间按钮-->
             <el-button type="primary" @click="handleAdd">添加房间</el-button>
+            <!--导出Excel-->
+            <el-button type="primary" @click="exportData">导出Excel</el-button>
             <!--刷新按钮-->
             <el-button
               type="text"
@@ -52,7 +54,7 @@
                 <el-select
                   v-model="searchParams.roomTypeId"
                   placeholder="请选择房间类型"
-                  style="width: 200px"
+                  style="width: 120px"
                   @change="fetchData"
                 >
                   <el-option label="全部" value="" />
@@ -230,6 +232,8 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { Room, addRoom, updateRoom, deleteRoom, getRoomList } from "@/api/room";
 import { RoomType, getRoomTypeList } from "@/api/roomType";
 import { Refresh } from "@element-plus/icons-vue";
+import {getRechargeList} from "@/api/log";
+import {exportExcel} from "@/views/components/exportExcel";
 
 const roomList = ref<Room[]>([]);
 const roomTypeList = ref<RoomType[]>([]);
@@ -285,6 +289,34 @@ const fetchData = async () => {
   roomList.value = res.data.items;
   total.value = res.data.total;
   floorList.value = [...new Set(res.data.items.map(item => item.floorNumber))];
+};
+
+const allTableData = ref([]);
+/**
+ * 获取所有数据(导出用)
+ */
+const getAllTableData = async () => {
+  try {
+    const res = await getRoomList({
+      ...searchParams,
+      pageNum: 1,
+      pageSize: total.value
+    });
+    allTableData.value = res.data.items;
+  } catch (error) {
+    console.error("数据导出失败:", error);
+  }
+};
+
+/**
+ * 导出数据
+ */
+const exportData = async () => {
+  await getAllTableData();
+  exportExcel({
+    data: allTableData.value,
+    fileName: "room"
+  });
 };
 
 /**

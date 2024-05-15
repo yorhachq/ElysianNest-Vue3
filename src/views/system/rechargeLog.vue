@@ -6,6 +6,8 @@
         <div class="card-header mt-1">
           <span class="font-bold text-lg">充值记录</span>
           <div class="float-end">
+            <!--导出Excel-->
+            <el-button type="primary" @click="exportData">导出Excel</el-button>
             <!--刷新按钮-->
             <el-button
               type="text"
@@ -108,9 +110,7 @@
           sortable
           :resizable="false"
         >
-          <template #default="{ row }">
-           ¥ {{ row.amount }}
-          </template>
+          <template #default="{ row }"> ¥ {{ row.amount }}</template>
         </el-table-column>
         <el-table-column prop="paymentMethod" label="支付方式" align="center" />
         <el-table-column
@@ -149,6 +149,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { Refresh } from "@element-plus/icons-vue";
 import { getRechargeList } from "@/api/log";
+import { exportExcel } from "@/views/components/exportExcel";
 
 const searchParams = reactive({
   username: "",
@@ -169,6 +170,34 @@ const fetchData = async () => {
   const res = await getRechargeList(searchParams);
   rechargeList.value = res.data.items;
   total.value = res.data.total;
+};
+
+const allTableData = ref([]);
+/**
+ * 获取所有数据(导出用)
+ */
+const getAllTableData = async () => {
+  try {
+    const res = await getRechargeList({
+      ...searchParams,
+      pageNum: 1,
+      pageSize: total.value
+    });
+    allTableData.value = res.data.items;
+  } catch (error) {
+    console.error("数据导出失败:", error);
+  }
+};
+
+/**
+ * 导出数据
+ */
+const exportData = async () => {
+  await getAllTableData();
+  exportExcel({
+    data: allTableData.value,
+    fileName: "rechargeLog"
+  });
 };
 
 /**

@@ -6,6 +6,8 @@
         <div class="card-header mt-1">
           <span class="font-bold text-lg">系统日志</span>
           <div class="float-end">
+            <!--导出Excel-->
+            <el-button type="primary" @click="exportData">导出Excel</el-button>
             <!--刷新按钮-->
             <el-button
               type="text"
@@ -159,6 +161,8 @@
 </template>
 
 <script setup lang="ts">
+import { exportExcel } from "@/views/components/exportExcel";
+
 defineOptions({
   name: "SysLog"
 });
@@ -190,6 +194,34 @@ const fetchData = async () => {
   const res = await getLogList(searchParams);
   logList.value = res.data.items;
   total.value = res.data.total;
+};
+
+const allTableData = ref([]);
+/**
+ * 获取所有数据(导出用)
+ */
+const getAllTableData = async () => {
+  try {
+    const res = await getLogList({
+      ...searchParams,
+      pageNum: 1,
+      pageSize: total.value
+    });
+    allTableData.value = res.data.items;
+  } catch (error) {
+    console.error("数据导出失败:", error);
+  }
+};
+
+/**
+ * 导出数据
+ */
+const exportData = async () => {
+  await getAllTableData();
+  exportExcel({
+    data: allTableData.value,
+    fileName: "rechargeLog"
+  });
 };
 
 /**

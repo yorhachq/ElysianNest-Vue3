@@ -17,6 +17,8 @@
             <el-button type="primary" @click="handleAdd"
               >添加房间类型
             </el-button>
+            <!--导出Excel-->
+            <el-button type="primary" @click="exportData">导出Excel</el-button>
             <el-button
               type="text"
               :icon="Refresh"
@@ -44,7 +46,12 @@
         <el-table-column prop="price" label="房型价格" align="center" sortable>
           <template #default="scope"> {{ scope.row.price }}&nbsp;¥</template>
         </el-table-column>
-        <el-table-column prop="image" label="房型图片" align="center" width="200rem">
+        <el-table-column
+          prop="image"
+          label="房型图片"
+          align="center"
+          width="200rem"
+        >
           <template #default="scope">
             <img :src="scope.row.image" class="w-40 h-20 object-cover" />
           </template>
@@ -165,6 +172,7 @@ import {
 } from "@/api/roomType";
 import { RoomType } from "@/api/roomType";
 import { getToken } from "@/utils/auth";
+import {exportExcel} from "@/views/components/exportExcel";
 
 const roomTypeList = ref<RoomType[]>([]);
 const total = ref(0);
@@ -189,10 +197,6 @@ defineOptions({
   name: "RoomType"
 });
 
-onMounted(() => {
-  fetchData();
-});
-
 const fetchData = async () => {
   const res = await getRoomTypeList({
     pageNum: pageNum.value,
@@ -202,6 +206,35 @@ const fetchData = async () => {
   roomTypeList.value = res.data.items;
   total.value = res.data.total;
 };
+
+const allTableData = ref([]);
+/**
+ * 获取所有数据(导出用)
+ */
+const getAllTableData = async () => {
+  try {
+    const res = await getRoomTypeList({
+      keyword: searchKeyword.value,
+      pageNum: 1,
+      pageSize: total.value
+    });
+    allTableData.value = res.data.items;
+  } catch (error) {
+    console.error("数据导出失败:", error);
+  }
+};
+
+/**
+ * 导出数据
+ */
+const exportData = async () => {
+  await getAllTableData();
+  exportExcel({
+    data: allTableData.value,
+    fileName: "roomType"
+  });
+};
+
 const handleRefresh = () => {
   searchKeyword.value = "";
   pageNum.value = 1;
@@ -277,6 +310,10 @@ const handleSubmit = async () => {
     }
   });
 };
+
+onMounted(() => {
+  fetchData();
+});
 </script>
 
 <style scoped>

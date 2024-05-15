@@ -65,6 +65,7 @@ login:
   registerSuccess: 注册成功
   phone: 手机号码
   email: 邮箱
+  verifyCode: 验证码
   smsVerifyCode: 短信验证码
   emailVerifyCode: 邮箱验证码
   back: 返回

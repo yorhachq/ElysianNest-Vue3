@@ -42,6 +42,10 @@ export const useUserStore = defineStore({
     SET_ROLES(roles: Array<string>) {
       this.roles = roles;
     },
+    /** 存储前端生成的验证码 */
+    SET_VERIFYCODE(verifyCode: string) {
+      this.verifyCode = verifyCode;
+    },
     /** 存储头像 */
     SET_AVATAR(avatar: string) {
       this.avatar = avatar;

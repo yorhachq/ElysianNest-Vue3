@@ -219,7 +219,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="editForm.username" />
+          <el-input v-model="editForm.username" disabled />
         </el-form-item>
         <el-form-item label="性别" class="ml-6">
           <el-radio-group v-model="editForm.gender">
